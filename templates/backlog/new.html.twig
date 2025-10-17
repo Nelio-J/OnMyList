@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Backlog{% endblock %}
+
+{% block body %}
+    <h1>Create new Backlog</h1>
+
+    {{ include('backlog/_form.html.twig') }}
+
+    <a href="{{ path('app_backlog_index') }}">back to list</a>
+{% endblock %}

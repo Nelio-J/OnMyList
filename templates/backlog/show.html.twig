@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Backlog{% endblock %}
+
+{% block body %}
+    <h1>Backlog</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ backlog.id }}</td>
+            </tr>
+            <tr>
+                <th>Name</th>
+                <td>{{ backlog.name }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_backlog_index') }}">back to list</a>
+
+    <a href="{{ path('app_backlog_edit', {'id': backlog.id}) }}">edit</a>
+
+    {{ include('backlog/_delete_form.html.twig') }}
+{% endblock %}
