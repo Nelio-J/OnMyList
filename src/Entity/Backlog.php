@@ -24,7 +24,7 @@ class Backlog
     /**
      * @var Collection<int, BacklogItem>
      */
-    #[ORM\OneToMany(targetEntity: BacklogItem::class, mappedBy: 'backlog_id')]
+    #[ORM\OneToMany(targetEntity: BacklogItem::class, mappedBy: 'backlog')]
     private Collection $items;
 
     public function __construct()
@@ -73,7 +73,7 @@ class Backlog
     {
         if (!$this->items->contains($item)) {
             $this->items->add($item);
-            $item->setBacklogId($this);
+            $item->setBacklog($this);
         }
 
         return $this;
@@ -83,8 +83,8 @@ class Backlog
     {
         if ($this->items->removeElement($item)) {
             // set the owning side to null (unless already changed)
-            if ($item->getBacklogId() === $this) {
-                $item->setBacklogId(null);
+            if ($item->getBacklog() === $this) {
+                $item->setBacklog(null);
             }
         }
 
