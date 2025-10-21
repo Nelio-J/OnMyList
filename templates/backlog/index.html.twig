@@ -5,6 +5,13 @@
 {% block body %}
     <h1>Backlog index</h1>
 
+    <div class="search-bar">
+        <form action="{{ path('app_spotify_search') }}" method="get">
+            <input type="text" name="query" placeholder="Search..." required>
+            <button type="submit">Search</button>
+        </form>
+    </div>
+
     <table class="table">
         <thead>
             <tr>

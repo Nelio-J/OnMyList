@@ -23,11 +23,22 @@ final class BacklogController extends AbstractController
         ]);
     }
 
-    #[Route('/spotify/search/{query}', name: 'app_spotify_search', methods: ['GET'])]
-    public function search(SpotifyAPIService $spotifyAPI, string $query): Response
+    #[Route('/spotify/search', name: 'app_spotify_search', methods: ['GET'])]
+    public function search(Request $request, SpotifyAPIService $spotifyAPI): Response
     {
+        $query = $request->query->get('query', '');
+
+        if (empty($query)) {
+            return $this->redirectToRoute('app_backlog_index');
+        }
+
         $results = $spotifyAPI->search($query);
-        dd($results); // Dumps JSON to browser
+        // dd($results); // Dumps JSON to browser
+
+        return $this->render('backlog/search.html.twig', [
+            'results' => $results,
+            'query' => $query,
+        ]);
     }
 
     #[Route('/new', name: 'app_backlog_new', methods: ['GET', 'POST'])]

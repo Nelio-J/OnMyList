@@ -1,0 +1,31 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Search Results for "{{ query }}"{% endblock %}
+
+{% block body %}
+  <h1>Search results for "{{ query }}"</h1>
+
+  <div class="results">
+    {% for item in results %}
+      <div class="result">
+        {% if item.image %}
+          <img src="{{ item.image }}" alt="{{ item.name }}" width="150">
+        {% endif %}
+
+        <h3>{{ item.name }}</h3>
+
+        {% if item.type == 'artist' %}
+          {# <p><strong>Type:</strong> Artist</p> #}
+        {% elseif item.type == 'album' %}
+          {# <p><strong>Type:</strong> Album</p> #}
+          <p><strong>Artist:</strong> {{ item.artists }}</p>
+          <p><strong>Released:</strong> {{ item.release_date }}</p>
+        {% endif %}
+      </div>
+    {% else %}
+      <p>No results found.</p>
+    {% endfor %}
+  </div>
+
+  <a href="{{ path('app_backlog_index') }}">Back to Backlog</a>
+{% endblock %}
