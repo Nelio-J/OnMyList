@@ -22,6 +22,17 @@
           <p><strong>Released:</strong> {{ item.release_date }}</p>
         {% endif %}
       </div>
+
+      <form action="{{ path('app_backlog_additem') }}" method="post">
+        <input type="hidden" name="type" value="{{ item.type }}">
+        <input type="hidden" name="name" value="{{ item.name }}">
+        <input type="hidden" name="spotify_id" value="{{ item.spotify_id }}">
+        <input type="hidden" name="image" value="{{ item.image }}">
+        {% if item.type == 'album' %}
+          <input type="hidden" name="release_date" value="{{ item.release_date }}">
+        {% endif %}
+        <button type="submit">Add to Backlog</button>
+      </form>
     {% else %}
       <p>No results found.</p>
     {% endfor %}

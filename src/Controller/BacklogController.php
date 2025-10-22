@@ -2,7 +2,13 @@
 
 namespace App\Controller;
 
+use App\Entity\Album;
+use App\Entity\Artist;
 use App\Entity\Backlog;
+use App\Entity\BacklogItem;
+use App\Enum\BacklogItemStatus;
+use App\Enum\BacklogItemType;
+
 use App\Form\BacklogType;
 use App\Repository\BacklogRepository;
 use App\Service\SpotifyAPIService;
@@ -23,7 +29,7 @@ final class BacklogController extends AbstractController
         ]);
     }
 
-    #[Route('/spotify/search', name: 'app_spotify_search', methods: ['GET'])]
+    #[Route('/search', name: 'app_spotify_search', methods: ['GET'])]
     public function search(Request $request, SpotifyAPIService $spotifyAPI): Response
     {
         $query = $request->query->get('query', '');
@@ -61,7 +67,7 @@ final class BacklogController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_backlog_show', methods: ['GET'])]
+    #[Route('/{id}', name: 'app_backlog_show', methods: ['GET'], requirements: ['id' => '\d+'])]
     public function show(Backlog $backlog): Response
     {
         return $this->render('backlog/show.html.twig', [
@@ -69,7 +75,7 @@ final class BacklogController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_backlog_edit', methods: ['GET', 'POST'])]
+    #[Route('/{id}/edit', name: 'app_backlog_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
     public function edit(Request $request, Backlog $backlog, EntityManagerInterface $entityManager): Response
     {
         $form = $this->createForm(BacklogType::class, $backlog);
@@ -87,7 +93,7 @@ final class BacklogController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_backlog_delete', methods: ['POST'])]
+    #[Route('/{id}', name: 'app_backlog_delete', methods: ['POST'], requirements: ['id' => '\d+'])]
     public function delete(Request $request, Backlog $backlog, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$backlog->getId(), $request->getPayload()->getString('_token'))) {
@@ -96,5 +102,78 @@ final class BacklogController extends AbstractController
         }
 
         return $this->redirectToRoute('app_backlog_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    
+    #[Route('/additem', name: 'app_backlog_additem', methods: ['POST'])]
+    public function addToBacklog(Request $request, EntityManagerInterface $entityManager): Response
+    {
+        $type = $request->request->get('type');
+        $name = $request->request->get('name');
+        $spotifyId = $request->request->get('spotify_id');
+        $image = $request->request->get('image');
+        $releaseDate = $type === 'album' ? $request->request->get('release_date') : null;
+
+        // dd($type, $name, $spotifyId, $image, $releaseDate);
+
+        if (!$type || !$spotifyId) {
+            $this->addFlash('error', 'Missing data.');
+            return $this->redirectToRoute('app_backlog_index');
+        }
+
+        // Logic to add the item to the backlog
+        if ($type === 'artist') {
+            // Add artist to backlog
+            $entity = $entityManager->getRepository(Artist::class)->findOneBy(['spotify_id' => $spotifyId]);
+            if (!$entity) {
+                $entity = new Artist();
+                $entity->setName($name);
+                $entity->setSpotifyId($spotifyId);
+                $entity->setImage($image);
+
+                $entityManager->persist($entity);
+            }
+        } elseif ($type === 'album') {
+            // Add album to backlog
+            $entity = $entityManager->getRepository(Album::class)->findOneBy(['spotify_id' => $spotifyId]);
+            if (!$entity) {
+                $entity = new Album();
+                $entity->setName($name);
+                $entity->setSpotifyId($spotifyId);
+                $entity->setImage($image);
+
+                if ($releaseDate) {
+                    $FormattedReleaseDate = \DateTime::createFromFormat('Y-m-d', $releaseDate);
+                    $entity->setReleaseDate($FormattedReleaseDate);
+                }
+
+                $entityManager->persist($entity);
+            }
+        }
+
+        // Add to a default backlog
+        $backlog = $entityManager->getRepository(Backlog::class)->findOneBy(['id' => 5]);
+        if (!$backlog) {
+            $this->addFlash('error', 'Backlog not found.');
+            return $this->redirectToRoute('app_backlog_index');
+        }
+
+        $item = new BacklogItem();
+        $item->setBacklog($backlog);
+        $item->setStatus(BacklogItemStatus::PLANNED);
+
+        if ($type === 'artist') {
+            $item->setType(BacklogItemType::ARTIST);
+            $item->setArtist($entity);
+        } else {
+            $item->setType(BacklogItemType::ALBUM);
+            $item->setAlbum($entity);
+        }
+
+        $entityManager->persist($item);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Added to backlog.');
+        return $this->redirectToRoute('app_backlog_index');
     }
 }
