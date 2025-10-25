@@ -27,7 +27,7 @@ class Artist
     /**
      * @var Collection<int, Album>
      */
-    #[ORM\ManyToMany(targetEntity: Album::class, mappedBy: 'artist')]
+    #[ORM\ManyToMany(targetEntity: Album::class, mappedBy: 'artists')]
     private Collection $albums;
 
     public function __construct()

@@ -18,7 +18,7 @@
           {# <p><strong>Type:</strong> Artist</p> #}
         {% elseif item.type == 'album' %}
           {# <p><strong>Type:</strong> Album</p> #}
-          <p><strong>Artist:</strong> {{ item.artists }}</p>
+          <p><strong>Artist:</strong> {{ item.artist_display }}</p>
           <p><strong>Released:</strong> {{ item.release_date }}</p>
         {% endif %}
       </div>
@@ -30,6 +30,7 @@
         <input type="hidden" name="image" value="{{ item.image }}">
         {% if item.type == 'album' %}
           <input type="hidden" name="release_date" value="{{ item.release_date }}">
+          <input type="hidden" name="artists" value="{{ item.artists|json_encode() }}">
         {% endif %}
         <button type="submit">Add to Backlog</button>
       </form>

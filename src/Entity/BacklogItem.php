@@ -7,7 +7,19 @@ use App\Enum\BacklogItemType;
 use App\Repository\BacklogItemRepository;
 use Doctrine\ORM\Mapping as ORM;
 
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
+
 #[ORM\Entity(repositoryClass: BacklogItemRepository::class)]
+
+#[ORM\Table(name: 'backlog_item', uniqueConstraints: [
+    new ORM\UniqueConstraint(name: 'uniq_backlog_album', columns: ['backlog_id', 'type', 'album_id']),
+    new ORM\UniqueConstraint(name: 'uniq_backlog_artist', columns: ['backlog_id', 'type', 'artist_id']),
+])]
+
+#[UniqueEntity(fields: ['backlog', 'type', 'album'], message: 'This album is already in the backlog.')]
+#[UniqueEntity(fields: ['backlog', 'type', 'artist'], message: 'This artist is already in the backlog.')]
+
 class BacklogItem
 {
     #[ORM\Id]

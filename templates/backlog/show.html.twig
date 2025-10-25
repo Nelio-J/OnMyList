@@ -22,6 +22,69 @@
         </tbody>
     </table>
 
+    <h2>Items</h2>
+    {% if backlog.items is empty %}
+        <p>No items in this backlog yet.</p>
+    {% else %}
+    <table class="table">
+            <thead>
+                <tr>
+                    <th>Image</th>
+                    <th>Name</th>
+                    {# Hide this in the actual list later #}
+                    <th>Type</th> 
+                    <th>Status</th>
+                    <th>Release Date</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in backlog.items %}
+                    <tr>
+                        <td>
+                            {% if item.type.value == 'artist' and item.artist %}
+                                <img src="{{ item.artist.image }}" alt="{{ item.artist.name }}" width="100">
+                            {% elseif item.type.value == 'album' and item.album and item.album.image %}
+                                <img src="{{ item.album.image }}" alt="{{ item.album.name }}" width="100">
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if item.type.value == 'artist' and item.artist %}
+                                🎤 {{ item.artist.name }}
+                            {% elseif item.type.value == 'album' and item.album %}
+                                💿 {{ item.album.name }}
+                                <br>
+                                {% if item.album.artists %}
+                                    by {{ item.album.artists|map(a => a.name)|join(', ') }}
+                                {% endif %}
+                            {% else %}
+                                <em>Unknown item</em>
+                            {% endif %}
+                        </td>
+                        <td>
+                            <span class="badge">{{ item.type.value }}</span>
+                        </td>
+                        <td>
+                            {% if item.status %}
+                                <span class="badge badge-{{ item.status.value }}">{{ item.status.value }}</span>
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if item.type.value == 'album' and item.album and item.album.releaseDate %}
+                                Released: {{ item.album.releaseDate|date('Y-m-d') }}
+                            {% endif %}
+                        </td>
+                        <td>
+                            {% if item.note %}
+                                <br><small>Note: {{ item.note }}</small>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% endif %}
+
     <a href="{{ path('app_backlog_index') }}">back to list</a>
 
     <a href="{{ path('app_backlog_edit', {'id': backlog.id}) }}">edit</a>

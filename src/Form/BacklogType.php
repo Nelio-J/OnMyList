@@ -13,6 +13,7 @@ class BacklogType extends AbstractType
     {
         $builder
             ->add('name')
+            ->add('description')
         ;
     }
 

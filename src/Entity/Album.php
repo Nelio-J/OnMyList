@@ -32,11 +32,11 @@ class Album
      * @var Collection<int, Artist>
      */
     #[ORM\ManyToMany(targetEntity: Artist::class, inversedBy: 'albums')]
-    private Collection $artist;
+    private Collection $artists;
 
     public function __construct()
     {
-        $this->artist = new ArrayCollection();
+        $this->artists = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -95,15 +95,16 @@ class Album
     /**
      * @return Collection<int, Artist>
      */
-    public function getArtist(): Collection
+    public function getArtists(): Collection
     {
-        return $this->artist;
+        return $this->artists;
     }
 
     public function addArtist(Artist $artist): static
     {
-        if (!$this->artist->contains($artist)) {
-            $this->artist->add($artist);
+        if (!$this->artists->contains($artist)) {
+            $this->artists->add($artist);
+            $artist->addAlbum($this);
         }
 
         return $this;
@@ -111,7 +112,9 @@ class Album
 
     public function removeArtist(Artist $artist): static
     {
-        $this->artist->removeElement($artist);
+        if ($this->artists->removeElement($artist)) {
+            $artist->removeAlbum($this); // sync inverse
+        }
 
         return $this;
     }

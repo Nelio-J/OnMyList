@@ -114,7 +114,7 @@ final class BacklogController extends AbstractController
         $image = $request->request->get('image');
         $releaseDate = $type === 'album' ? $request->request->get('release_date') : null;
 
-        // dd($type, $name, $spotifyId, $image, $releaseDate);
+        // dd($request->request->all());
 
         if (!$type || !$spotifyId) {
             $this->addFlash('error', 'Missing data.');
@@ -147,14 +147,54 @@ final class BacklogController extends AbstractController
                     $entity->setReleaseDate($FormattedReleaseDate);
                 }
 
+                $artistsJson = $request->request->get('artists');
+                $artists = json_decode($artistsJson, true) ?: [];
+
+                // Handle multiple artists
+                foreach ($artists as $artistData) {
+                    $artistEntity = $entityManager->getRepository(Artist::class)->findOneBy(['spotify_id' => $artistData['spotify_id']]);
+                    if (!$artistEntity) {
+                        $artistEntity = new Artist();
+                        $artistEntity->setName($artistData['name']);
+                        $artistEntity->setSpotifyId($artistData['spotify_id']);
+
+                        //This needs to search for the artist image later on. Right now it just always returns null because the album artist data doesn't include images.
+                        $artistEntity->setImage($artistData['images'][0]['url'] ?? null);
+
+                        $entityManager->persist($artistEntity);
+                    }
+
+                    $entity->addArtist($artistEntity);
+                }
+
                 $entityManager->persist($entity);
             }
         }
 
         // Add to a default backlog
-        $backlog = $entityManager->getRepository(Backlog::class)->findOneBy(['id' => 5]);
+        $backlog = $entityManager->getRepository(Backlog::class)->findOneBy(['id' => 1]);
         if (!$backlog) {
             $this->addFlash('error', 'Backlog not found.');
+            return $this->redirectToRoute('app_backlog_index');
+        }
+        
+        // Check for existing item in backlog
+        if ($type === 'artist') {
+            $existing = $entityManager->getRepository(BacklogItem::class)->findOneBy([
+                'backlog' => $backlog,
+                'type'    => BacklogItemType::ARTIST,
+                'artist'  => $entity,
+            ]);
+        } else {
+            $existing = $entityManager->getRepository(BacklogItem::class)->findOneBy([
+                'backlog' => $backlog,
+                'type'    => BacklogItemType::ALBUM,
+                'album'   => $entity,
+            ]);
+        }
+
+        if ($existing) {
+            $this->addFlash('info', 'This item is already in this backlog.');
             return $this->redirectToRoute('app_backlog_index');
         }
 

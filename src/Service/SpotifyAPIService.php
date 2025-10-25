@@ -77,7 +77,8 @@ class SpotifyAPIService
             'spotify_id' => $album['id'],
             'name' => $album['name'],   
             'image' => $album['images'][0]['url'] ?? null,
-            'artists' => implode(', ', array_map(fn($a) => $a['name'], $album['artists'] ?? [])),
+            'artists' => array_map(fn($a) => ['spotify_id' => $a['id'], 'name' => $a['name']], $album['artists'] ?? []),
+            'artist_display' => implode(', ', array_map(fn($a) => $a['name'], $album['artists'] ?? [])),
             'release_date' => $album['release_date'] ?? null,
         ], $content['albums']['items'] ?? []);
 
