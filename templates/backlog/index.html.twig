@@ -26,8 +26,8 @@
                 <td>{{ backlog.id }}</td>
                 <td>{{ backlog.name }}</td>
                 <td>
-                    <a href="{{ path('app_backlog_show', {'id': backlog.id}) }}">show</a>
-                    <a href="{{ path('app_backlog_edit', {'id': backlog.id}) }}">edit</a>
+                    <a href="{{ path('app_backlog_show', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">show</a>
+                    <a href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">edit</a>
                 </td>
             </tr>
         {% else %}

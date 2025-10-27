@@ -17,6 +17,8 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
+use Symfony\Component\Uid\Uuid;
 
 #[Route('/backlog')]
 final class BacklogController extends AbstractController
@@ -30,8 +32,10 @@ final class BacklogController extends AbstractController
     }
 
     #[Route('/search', name: 'app_spotify_search', methods: ['GET'])]
-    public function search(Request $request, SpotifyAPIService $spotifyAPI): Response
+    public function search(Request $request, SpotifyAPIService $spotifyAPI, BacklogRepository $backlogRepository): Response
     {
+        // $backlog = $backlogRepository->findOneBy(['id' => 1]); // Temporary default backlog
+
         $query = $request->query->get('query', '');
 
         if (empty($query)) {
@@ -44,17 +48,21 @@ final class BacklogController extends AbstractController
         return $this->render('backlog/search.html.twig', [
             'results' => $results,
             'query' => $query,
+            'backlogs' => $backlogRepository->findAll(),
         ]);
     }
 
     #[Route('/new', name: 'app_backlog_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $backlog = new Backlog();
         $form = $this->createForm(BacklogType::class, $backlog);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $slug = $slugger->slug($backlog->getName())->lower()->toString();
+            $backlog->setSlug($slug);
+
             $entityManager->persist($backlog);
             $entityManager->flush();
 
@@ -67,21 +75,42 @@ final class BacklogController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_backlog_show', methods: ['GET'], requirements: ['id' => '\d+'])]
-    public function show(Backlog $backlog): Response
+    #[Route('/{uuid}/{slug}', name: 'app_backlog_show', methods: ['GET'])]
+    public function show(BacklogRepository $backlogRepository, string $uuid, string $slug ): Response
     {
+        $backlog = $backlogRepository->findOneBy([
+            'uuid' => Uuid::fromString($uuid),
+            'slug' => $slug
+        ]);
+
+        if (!$backlog) {
+            throw $this->createNotFoundException('Backlog not found.');
+        }
+
         return $this->render('backlog/show.html.twig', [
             'backlog' => $backlog,
         ]);
     }
 
-    #[Route('/{id}/edit', name: 'app_backlog_edit', methods: ['GET', 'POST'], requirements: ['id' => '\d+'])]
-    public function edit(Request $request, Backlog $backlog, EntityManagerInterface $entityManager): Response
+    #[Route('/{uuid}/{slug}/edit', name: 'app_backlog_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, BacklogRepository $backlogRepository, string $uuid, string $slug, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
+        $backlog = $backlogRepository->findOneBy([
+            'uuid' => Uuid::fromString($uuid),
+            'slug' => $slug
+        ]);
+
+        if (!$backlog) {
+            throw $this->createNotFoundException('Backlog not found.');
+        }
+
         $form = $this->createForm(BacklogType::class, $backlog);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $slug = $slugger->slug($backlog->getName())->lower()->toString();
+            $backlog->setSlug($slug);
+
             $entityManager->flush();
 
             return $this->redirectToRoute('app_backlog_index', [], Response::HTTP_SEE_OTHER);
@@ -93,9 +122,17 @@ final class BacklogController extends AbstractController
         ]);
     }
 
-    #[Route('/{id}', name: 'app_backlog_delete', methods: ['POST'], requirements: ['id' => '\d+'])]
-    public function delete(Request $request, Backlog $backlog, EntityManagerInterface $entityManager): Response
+    #[Route('/{uuid}', name: 'app_backlog_delete', methods: ['POST'], requirements: ['uuid' => '[0-9a-f-]{36}'])]
+    public function delete(Request $request, BacklogRepository $backlogRepository, string $uuid, EntityManagerInterface $entityManager): Response
     {
+        $backlog = $backlogRepository->findOneBy([
+            'uuid' => Uuid::fromString($uuid)
+        ]);
+
+        if (!$backlog) {
+            throw $this->createNotFoundException('Backlog not found.');
+        }
+
         if ($this->isCsrfTokenValid('delete'.$backlog->getId(), $request->getPayload()->getString('_token'))) {
             $entityManager->remove($backlog);
             $entityManager->flush();
@@ -106,8 +143,24 @@ final class BacklogController extends AbstractController
 
     
     #[Route('/additem', name: 'app_backlog_additem', methods: ['POST'])]
-    public function addToBacklog(Request $request, EntityManagerInterface $entityManager): Response
+    public function addToBacklog(Request $request, EntityManagerInterface $entityManager, BacklogRepository $backlogRepository): Response
     {
+        $backlogUuid = $request->request->get('backlog_uuid'); // selected backlog
+        $backlog = null;
+
+        if ($backlogUuid) {
+            try {
+                $backlog = $backlogRepository->findOneBy(['uuid' => Uuid::fromString($backlogUuid)]);
+            } catch (\Throwable $e) {
+                $backlog = null;
+            }
+        }
+
+        if (!$backlog) {
+            $this->addFlash('error', 'Backlog not found.');
+            return $this->redirectToRoute('app_backlog_index');
+        }
+
         $type = $request->request->get('type');
         $name = $request->request->get('name');
         $spotifyId = $request->request->get('spotify_id');
@@ -172,11 +225,15 @@ final class BacklogController extends AbstractController
         }
 
         // Add to a default backlog
-        $backlog = $entityManager->getRepository(Backlog::class)->findOneBy(['id' => 1]);
-        if (!$backlog) {
-            $this->addFlash('error', 'Backlog not found.');
-            return $this->redirectToRoute('app_backlog_index');
-        }
+        // $backlog = $entityManager->getRepository(Backlog::class)->findOneBy([
+        //     'uuid' => Uuid::fromString($uuid),
+        //     'slug' => $slug
+        // ]);
+
+        // if (!$backlog) {
+        //     $this->addFlash('error', 'Backlog not found.');
+        //     return $this->redirectToRoute('app_backlog_index');
+        // }
         
         // Check for existing item in backlog
         if ($type === 'artist') {

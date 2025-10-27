@@ -85,9 +85,9 @@
         </table>
     {% endif %}
 
-    <a href="{{ path('app_backlog_index') }}">back to list</a>
+    <a href="{{ path('app_backlog_index') }}">back to backlog overview</a>
 
-    <a href="{{ path('app_backlog_edit', {'id': backlog.id}) }}">edit</a>
+    <a href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">edit</a>
 
     {{ include('backlog/_delete_form.html.twig') }}
 {% endblock %}

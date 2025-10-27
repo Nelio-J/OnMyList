@@ -6,8 +6,11 @@ use App\Repository\BacklogRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\String\Slugger\AsciiSlugger;
+use Symfony\Component\Uid\Uuid;
 
 #[ORM\Entity(repositoryClass: BacklogRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Backlog
 {
     #[ORM\Id]
@@ -27,8 +30,15 @@ class Backlog
     #[ORM\OneToMany(targetEntity: BacklogItem::class, mappedBy: 'backlog')]
     private Collection $items;
 
+    #[ORM\Column(type: 'uuid', unique: true)]
+    private ?Uuid $uuid = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $slug = null;
+
     public function __construct()
     {
+        $this->uuid = Uuid::v4();
         $this->items = new ArrayCollection();
     }
 
@@ -87,6 +97,30 @@ class Backlog
                 $item->setBacklog(null);
             }
         }
+
+        return $this;
+    }
+
+    public function getUuid(): ?Uuid
+    {
+        return $this->uuid;
+    }
+
+    public function setUuid(Uuid $uuid): static
+    {
+        $this->uuid = $uuid;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
 
         return $this;
     }

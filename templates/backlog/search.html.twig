@@ -32,6 +32,13 @@
           <input type="hidden" name="release_date" value="{{ item.release_date }}">
           <input type="hidden" name="artists" value="{{ item.artists|json_encode() }}">
         {% endif %}
+
+        <label for="backlog-select-{{ loop.index }}">Add to backlog:</label>
+        <select id="backlog-select-{{ loop.index }}" name="backlog_uuid" required>
+          {% for backlog in backlogs %}
+            <option value="{{ backlog.uuid }}">{{ backlog.name }}</option>
+          {% endfor %}
+        </select>
         <button type="submit">Add to Backlog</button>
       </form>
     {% else %}
