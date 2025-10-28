@@ -145,13 +145,15 @@ final class BacklogController extends AbstractController
     #[Route('/additem', name: 'app_backlog_additem', methods: ['POST'])]
     public function addToBacklog(Request $request, EntityManagerInterface $entityManager, BacklogRepository $backlogRepository): Response
     {
-        $backlogUuid = $request->request->get('backlog_uuid'); // selected backlog
+        $uuid = $request->request->get('backlog_uuid');
         $backlog = null;
 
-        if ($backlogUuid) {
-            try {
-                $backlog = $backlogRepository->findOneBy(['uuid' => Uuid::fromString($backlogUuid)]);
-            } catch (\Throwable $e) {
+        if ($uuid) {
+            try { 
+                $backlog = $backlogRepository->findOneBy([
+                    'uuid' => Uuid::fromString($uuid)
+                ]);
+            } catch (Exception $e) {
                 $backlog = null;
             }
         }
