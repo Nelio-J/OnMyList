@@ -79,6 +79,9 @@
                                 <br><small>Note: {{ item.note }}</small>
                             {% endif %}
                         </td>
+                        <td>
+                            {{ include('backlog/_delete_item.html.twig') }}
+                        </td>
                     </tr>
                 {% endfor %}
             </tbody>

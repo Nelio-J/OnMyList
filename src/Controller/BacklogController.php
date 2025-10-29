@@ -34,8 +34,6 @@ final class BacklogController extends AbstractController
     #[Route('/search', name: 'app_spotify_search', methods: ['GET'])]
     public function search(Request $request, SpotifyAPIService $spotifyAPI, BacklogRepository $backlogRepository): Response
     {
-        // $backlog = $backlogRepository->findOneBy(['id' => 1]); // Temporary default backlog
-
         $query = $request->query->get('query', '');
 
         if (empty($query)) {
@@ -43,7 +41,6 @@ final class BacklogController extends AbstractController
         }
 
         $results = $spotifyAPI->search($query);
-        // dd($results); // Dumps JSON to browser
 
         return $this->render('backlog/search.html.twig', [
             'results' => $results,
@@ -169,8 +166,6 @@ final class BacklogController extends AbstractController
         $image = $request->request->get('image');
         $releaseDate = $type === 'album' ? $request->request->get('release_date') : null;
 
-        // dd($request->request->all());
-
         if (!$type || !$spotifyId) {
             $this->addFlash('error', 'Missing data.');
             return $this->redirectToRoute('app_backlog_index');
@@ -226,17 +221,6 @@ final class BacklogController extends AbstractController
             }
         }
 
-        // Add to a default backlog
-        // $backlog = $entityManager->getRepository(Backlog::class)->findOneBy([
-        //     'uuid' => Uuid::fromString($uuid),
-        //     'slug' => $slug
-        // ]);
-
-        // if (!$backlog) {
-        //     $this->addFlash('error', 'Backlog not found.');
-        //     return $this->redirectToRoute('app_backlog_index');
-        // }
-        
         // Check for existing item in backlog
         if ($type === 'artist') {
             $existing = $entityManager->getRepository(BacklogItem::class)->findOneBy([
@@ -274,5 +258,23 @@ final class BacklogController extends AbstractController
 
         $this->addFlash('success', 'Added to backlog.');
         return $this->redirectToRoute('app_backlog_index');
+    }
+
+    #[Route('/deleteitem/{id}', name: 'app_backlog_deleteitem', methods: ['POST'])]
+    public function deleteItem(Request $request, EntityManagerInterface $entityManager, int $id): Response
+    {
+        $item = $entityManager->getRepository(BacklogItem::class)->find($id);
+
+        if (!$item) {
+            throw $this->createNotFoundException('Item not found.');
+        }
+
+        if ($this->isCsrfTokenValid('delete'.$item->getId(), $request->getPayload()->getString('_token'))) {
+            $entityManager->remove($item);
+            $entityManager->flush();
+        }
+
+        $this->addFlash('success', 'Item removed from backlog.');
+        return $this->redirectToRoute('app_backlog_index', [], Response::HTTP_SEE_OTHER);
     }
 }
