@@ -140,7 +140,7 @@ final class BacklogController extends AbstractController
 
     
     #[Route('/additem', name: 'app_backlog_additem', methods: ['POST'])]
-    public function addToBacklog(Request $request, EntityManagerInterface $entityManager, BacklogRepository $backlogRepository): Response
+    public function addToBacklog(Request $request, EntityManagerInterface $entityManager, BacklogRepository $backlogRepository, SpotifyAPIService $spotifyAPI): Response
     {
         $uuid = $request->request->get('backlog_uuid');
         $backlog = null;
@@ -208,8 +208,8 @@ final class BacklogController extends AbstractController
                         $artistEntity->setName($artistData['name']);
                         $artistEntity->setSpotifyId($artistData['spotify_id']);
 
-                        //This needs to search for the artist image later on. Right now it just always returns null because the album artist data doesn't include images.
-                        $artistEntity->setImage($artistData['images'][0]['url'] ?? null);
+                        //Search for the artist image. The artist data on the album array doesn't include images by default.
+                        $artistEntity->setImage($spotifyAPI->getArtistImage($artistData['spotify_id']));
 
                         $entityManager->persist($artistEntity);
                     }

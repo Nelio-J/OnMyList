@@ -1,3 +1,6 @@
+document.addEventListener('DOMContentLoaded', () => {
+  console.log('Modal script loading');
+
   const dialog = document.getElementById("backlogDialog");
   const form = document.getElementById("backlogForm");
 
@@ -16,3 +19,4 @@
       dialog.showModal();
     });
   });
+});

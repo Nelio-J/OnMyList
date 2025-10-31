@@ -84,6 +84,25 @@ class SpotifyAPIService
 
         return array_merge($artists, $albums);
     }
+
+    public function getArtistImage(string $spotifyId): ?string
+    {
+        $accessToken = $this->getAccessToken();
+
+        $response = $this->client->request(
+            'GET',
+            'https://api.spotify.com/v1/artists/' . $spotifyId,
+            [
+                'headers' => [
+                    'Authorization' => 'Bearer ' . $accessToken,
+                ],
+            ]
+        );
+
+        $content = $response->toArray();
+
+        return $content['images'][0]['url'] ?? null;
+    }
 }
 
 ?>

@@ -27,7 +27,7 @@ class Backlog
     /**
      * @var Collection<int, BacklogItem>
      */
-    #[ORM\OneToMany(targetEntity: BacklogItem::class, mappedBy: 'backlog')]
+    #[ORM\OneToMany(targetEntity: BacklogItem::class, mappedBy: 'backlog', orphanRemoval: true)]
     private Collection $items;
 
     #[ORM\Column(type: 'uuid', unique: true)]

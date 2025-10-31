@@ -28,7 +28,7 @@ class BacklogItem
     private ?int $id = null;
 
     #[ORM\ManyToOne(inversedBy: 'items')]
-    #[ORM\JoinColumn(nullable: false)]
+    #[ORM\JoinColumn(nullable: false, onDelete: 'CASCADE')]
     private ?Backlog $backlog = null;
 
     #[ORM\ManyToOne]
