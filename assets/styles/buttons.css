@@ -1,0 +1,23 @@
+.delete-item-button {
+    position: absolute;
+    top: 1rem;
+    left: 1rem;
+    z-index: 10;
+
+    padding-bottom: 0.4rem;
+    padding-top: 0.4rem;
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+    font-weight: bold;
+    border: #AE1313;
+    border-radius: 50%;
+
+    background-color: #AE1313;
+    color: white;
+    accent-color: #f18f8f;
+
+}
+
+.delete-item-button:hover {
+    color: black;
+}

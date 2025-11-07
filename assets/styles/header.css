@@ -1,0 +1,12 @@
+.title {
+    color: #3bb641;
+    display: flex;
+    justify-content: center;
+    padding: 2rem;
+}
+
+.description {
+    color: #3bb641;
+    display: flex;
+    justify-content: center;
+}

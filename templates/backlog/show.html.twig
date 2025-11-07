@@ -1,96 +1,83 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Backlog{% endblock %}
+{% block title %}Backlog
+{% endblock %}
+
+{% block javascripts %}
+	{% block importmap %}
+		{{ importmap('app') }}
+	{% endblock %}
+	<script src="{{ asset('js/flip-card.js') }}" type="module" defer></script>
+{% endblock %}
 
 {% block body %}
-    <h1>Backlog</h1>
+	<div class="backlog-header">
+		<h2 class="title">{{ backlog.name }}</h2>
+		<p class="description">{{ backlog.description }}</p>
+	</div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ backlog.id }}</td>
-            </tr>
-            <tr>
-                <th>Name</th>
-                <td>{{ backlog.name }}</td>
-            </tr>
-            <tr>
-                <th>Description</th>
-                <td>{{ backlog.description }}</td>
-            </tr>
-        </tbody>
-    </table>
+	<h2>Items</h2>
+	{% if backlog.items is empty %}
+		<p>No items in this backlog yet.</p>
+	{% else %}
+		<div class="items-grid">
+			{% for item in backlog.items %}
+				<article class="item-card">
+				<div class="item-card-inner">
+					<div class="item-card-face item-card-face--front">
+						{% if item.type.value == 'artist' and item.artist %}
+							<img src="{{ item.artist.image }}" alt="{{ item.artist.name }}" class="item-image">
+						{% elseif item.type.value == 'album' and item.album and item.album.image %}
+							<img src="{{ item.album.image }}" alt="{{ item.album.name }}" class="item-image">
+						{% endif %}
 
-    <h2>Items</h2>
-    {% if backlog.items is empty %}
-        <p>No items in this backlog yet.</p>
-    {% else %}
-    <table class="table">
-            <thead>
-                <tr>
-                    <th>Image</th>
-                    <th>Name</th>
-                    {# Hide this in the actual list later #}
-                    <th>Type</th> 
-                    <th>Status</th>
-                    <th>Release Date</th>
-                    <th>Notes</th>
-                </tr>
-            </thead>
-            <tbody>
-                {% for item in backlog.items %}
-                    <tr>
-                        <td>
-                            {% if item.type.value == 'artist' and item.artist %}
-                                <img src="{{ item.artist.image }}" alt="{{ item.artist.name }}" width="100">
-                            {% elseif item.type.value == 'album' and item.album and item.album.image %}
-                                <img src="{{ item.album.image }}" alt="{{ item.album.name }}" width="100">
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if item.type.value == 'artist' and item.artist %}
-                                🎤 {{ item.artist.name }}
-                            {% elseif item.type.value == 'album' and item.album %}
-                                💿 {{ item.album.name }}
-                                <br>
-                                {% if item.album.artists %}
-                                    by {{ item.album.artists|map(a => a.name)|join(', ') }}
-                                {% endif %}
-                            {% else %}
-                                <em>Unknown item</em>
-                            {% endif %}
-                        </td>
-                        <td>
-                            <span class="badge">{{ item.type.value }}</span>
-                        </td>
-                        <td>
-                            {% if item.status %}
-                                <span class="badge badge-{{ item.status.value }}">{{ item.status.value }}</span>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if item.type.value == 'album' and item.album and item.album.releaseDate %}
-                                Released: {{ item.album.releaseDate|date('Y-m-d') }}
-                            {% endif %}
-                        </td>
-                        <td>
-                            {% if item.note %}
-                                <br><small>Note: {{ item.note }}</small>
-                            {% endif %}
-                        </td>
-                        <td>
-                            {{ include('backlog/_delete_item.html.twig') }}
-                        </td>
-                    </tr>
-                {% endfor %}
-            </tbody>
-        </table>
-    {% endif %}
+						<div class="item-content">
+							<h3 class="item-title">
+								{% if item.type.value == 'artist' %}
+									🎤
+									<a href="https://open.spotify.com/artist/{{ item.artist.spotifyId }}" target="_blank" rel="noopener" class="item-link">
+										{{ item.artist.name }}
+									</a>
+								{% elseif item.type.value == 'album' %}
+									💿
+									<a href="https://open.spotify.com/album/{{ item.album.spotifyId }}" target="_blank" rel="noopener" class="item-link">
+										{{ item.album.name }}
+									</a>
+								{% endif %}
+							</h3>
 
-    <a href="{{ path('app_backlog_index') }}">back to backlog overview</a>
+							{% if item.album and item.album.artists %}
+								<p class="item-subtitle">by
+									{{ item.album.artists|map(a => a.name)|join(', ') }}</p>
+							{% endif %}
 
-    <a href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">edit</a>
+							{# {% if item.album and item.album.releaseDate %}
+								<p class="item-meta">Released:
+									{{ item.album.releaseDate|date('Y-m-d') }}</p>
+							{% endif %} #}
+						</div>
+					</div>
 
-    {{ include('backlog/_delete_form.html.twig') }}
+					<div class="item-card-face item-card-face--back">
+						<div class="item-content">
+							{% if item.note %}
+								<p class="item-note">{{ item.note }}</p>
+							{% endif %}
+							<div class="item-status">
+								{% if item.status %}
+									<span class="badge badge-{{ item.status.value }}">{{ item.status.value }}</span>
+								{% endif %}
+							</div>
+						</div>
+					</div>
+
+					{{ include('backlog/_delete_item.html.twig') }}
+				</div>
+				</article>
+			{% endfor %}
+		</div>
+	{% endif %}
+	<a href="{{ path('app_backlog_index') }}">back to backlog overview</a>
+	<a href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">edit</a>
+	{{ include('backlog/_delete_form.html.twig') }}
 {% endblock %}
