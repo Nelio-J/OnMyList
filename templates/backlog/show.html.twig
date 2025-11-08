@@ -8,6 +8,7 @@
 		{{ importmap('app') }}
 	{% endblock %}
 	<script src="{{ asset('js/flip-card.js') }}" type="module" defer></script>
+	<script src="{{ asset('js/autosave-inputs.js') }}" type="module" defer></script>
 {% endblock %}
 
 {% block body %}
@@ -60,12 +61,18 @@
 
 					<div class="item-card-face item-card-face--back">
 						<div class="item-content">
-							{% if item.note %}
-								<p class="item-note">{{ item.note }}</p>
-							{% endif %}
+
+							<textarea class="item-note" data-item-id="{{ item.id }}" placeholder="Add a note..." cols="35" rows="50" wrap="hard">{% if item.note %}{{ item.note }}{% endif %}</textarea>
+
 							<div class="item-status">
 								{% if item.status %}
-									<span class="badge badge-{{ item.status.value }}">{{ item.status.value }}</span>
+								<select class="status-select" data-item-id="{{ item.id }}">
+									{% for statusOption in ['planned', 'listening', 'completed'] %}
+										<option value="{{ statusOption }}" {% if item.status.value == statusOption %} selected {% endif %}>
+											{{ statusOption }}
+										</option>
+									{% endfor %}
+								</select>
 								{% endif %}
 							</div>
 						</div>

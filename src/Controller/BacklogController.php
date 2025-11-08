@@ -11,6 +11,7 @@ use App\Enum\BacklogItemType;
 
 use App\Form\BacklogType;
 use App\Repository\BacklogRepository;
+use App\Repository\BacklogItemRepository;
 use App\Service\SpotifyAPIService;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -89,7 +90,7 @@ final class BacklogController extends AbstractController
         ]);
     }
 
-    #[Route('/{uuid}/{slug}/edit', name: 'app_backlog_edit', methods: ['GET', 'POST'])]
+    #[Route('/{uuid}/{slug}/edit', name: 'app_backlog_edit', methods: ['GET', 'POST'], requirements: ['uuid' => '[0-9a-f-]{36}'])]
     public function edit(Request $request, BacklogRepository $backlogRepository, string $uuid, string $slug, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
         $backlog = $backlogRepository->findOneBy([
@@ -276,5 +277,35 @@ final class BacklogController extends AbstractController
 
         $this->addFlash('success', 'Item removed from backlog.');
         return $this->redirectToRoute('app_backlog_index', [], Response::HTTP_SEE_OTHER);
+    }
+
+    #[Route('/item/edit-meta', name: 'app_backlog_edit_meta', methods: ['POST'])]
+    public function editMetaData(Request $request, BacklogItemRepository $backlogItemRepository, EntityManagerInterface $entityManager): Response
+    {
+        $data = $request->toArray();
+        $itemId = $data['item_id'] ?? null;
+        if (!$itemId) {
+            return $this->json(['success' => false, 'error' => 'Missing item_id'], 400);
+        }
+        
+        $item = $backlogItemRepository->find($itemId);
+
+        if (!$item) {
+            throw $this->createNotFoundException('Item not found.');
+        }
+
+        if (isset($data['note'])) {
+            $item->setNote($data['note']);
+        }
+
+        if (isset($data['status'])) {
+            $status = $data['status'];
+            $item->setStatus(BacklogItemStatus::from($status));
+        }
+
+        $entityManager->persist($item);
+        $entityManager->flush();
+
+        return $this->json(['success' => true]);
     }
 }
