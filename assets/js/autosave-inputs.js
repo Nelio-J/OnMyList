@@ -33,7 +33,6 @@ async function saveItemChange(itemId, data) {
 
         if (result.success) {
             console.log('Success:', result);
-            
         }
     } catch (error) {
         console.error('Error:', error);

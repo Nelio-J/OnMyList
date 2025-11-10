@@ -9,82 +9,114 @@
 	{% endblock %}
 	<script src="{{ asset('js/flip-card.js') }}" type="module" defer></script>
 	<script src="{{ asset('js/autosave-inputs.js') }}" type="module" defer></script>
+	<script src="{{ asset('js/backlog-actions.js') }}" type="module" defer></script>
 {% endblock %}
 
 {% block body %}
 	<div class="backlog-header">
-		<h2 class="title">{{ backlog.name }}</h2>
-		<p class="description">{{ backlog.description }}</p>
-	</div>
-
-	<h2>Items</h2>
-	{% if backlog.items is empty %}
-		<p>No items in this backlog yet.</p>
-	{% else %}
-		<div class="items-grid">
-			{% for item in backlog.items %}
-				<article class="item-card">
-				<div class="item-card-inner">
-					<div class="item-card-face item-card-face--front">
-						{% if item.type.value == 'artist' and item.artist %}
-							<img src="{{ item.artist.image }}" alt="{{ item.artist.name }}" class="item-image">
-						{% elseif item.type.value == 'album' and item.album and item.album.image %}
-							<img src="{{ item.album.image }}" alt="{{ item.album.name }}" class="item-image">
-						{% endif %}
-
-						<div class="item-content">
-							<h3 class="item-title">
-								{% if item.type.value == 'artist' %}
-									🎤
-									<a href="https://open.spotify.com/artist/{{ item.artist.spotifyId }}" target="_blank" rel="noopener" class="item-link">
-										{{ item.artist.name }}
-									</a>
-								{% elseif item.type.value == 'album' %}
-									💿
-									<a href="https://open.spotify.com/album/{{ item.album.spotifyId }}" target="_blank" rel="noopener" class="item-link">
-										{{ item.album.name }}
-									</a>
-								{% endif %}
-							</h3>
-
-							{% if item.album and item.album.artists %}
-								<p class="item-subtitle">by
-									{{ item.album.artists|map(a => a.name)|join(', ') }}</p>
-							{% endif %}
-
-							{# {% if item.album and item.album.releaseDate %}
-								<p class="item-meta">Released:
-									{{ item.album.releaseDate|date('Y-m-d') }}</p>
-							{% endif %} #}
-						</div>
-					</div>
-
-					<div class="item-card-face item-card-face--back">
-						<div class="item-content">
-
-							<textarea class="item-note" data-item-id="{{ item.id }}" placeholder="Add a note..." cols="35" rows="50" wrap="hard">{% if item.note %}{{ item.note }}{% endif %}</textarea>
-
-							<div class="item-status">
-								{% if item.status %}
-								<select class="status-select" data-item-id="{{ item.id }}">
-									{% for statusOption in ['planned', 'listening', 'completed'] %}
-										<option value="{{ statusOption }}" {% if item.status.value == statusOption %} selected {% endif %}>
-											{{ statusOption }}
-										</option>
-									{% endfor %}
-								</select>
-								{% endif %}
-							</div>
-						</div>
-					</div>
-
-					{{ include('backlog/_delete_item.html.twig') }}
-				</div>
-				</article>
-			{% endfor %}
+		<a href="{{ path('app_backlog_index') }}">
+			<--{{backlog.name}}</h2 back to backlog overview</a> <div class="backlog-title-wrapper"> <h2 class="title">>
+				<a class="edit-title" href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">edit</a>
+			</div>
+			<p class="description">{{ backlog.description }}</p>
 		</div>
-	{% endif %}
-	<a href="{{ path('app_backlog_index') }}">back to backlog overview</a>
-	<a href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">edit</a>
-	{{ include('backlog/_delete_form.html.twig') }}
-{% endblock %}
+
+		<div class="backlog-actions">
+			<select class="sort-items-select">
+				<option value="" disabled selected>Sort by</option>
+				<option value="name">Name (A-Z)</option>
+				<option value="nameDesc">Name (Z-A)</option>
+				<option value="dateAdded">Date Added (Newest)</option>
+				<option value="dateAddedDesc">Date Added (Oldest)</option>
+			</select>
+			{{ include('components/_button.html.twig', {
+			classname: 'filter-items',
+			action: 'filter',			
+			type: 'button',		
+			label: 'Filter by artist/album',
+		})
+		}}
+		</div>
+
+		{% if backlog.items is empty %}
+			<p>No items in this backlog yet.</p>
+		{% else %}
+			<div class="items-grid">
+				{% for item in backlog.items %}
+					<article class="item-card"  
+					data-name="{{ item.type.value == 'artist' ? item.artist.name : item.album.name }}" 
+					data-date-added="{{ item.dateAdded ? item.dateAdded|date('c') : '' }}"
+					>
+						<div class="item-card-inner">
+							<div class="item-card-face item-card-face--front">
+								{% if item.type.value == 'artist' and item.artist %}
+									<img src="{{ item.artist.image }}" alt="{{ item.artist.name }}" class="item-image">
+								{% elseif item.type.value == 'album' and item.album and item.album.image %}
+									<img src="{{ item.album.image }}" alt="{{ item.album.name }}" class="item-image">
+								{% endif %}
+
+								<div class="item-content">
+									<h3 class="item-title">
+										{% if item.type.value == 'artist' %}
+											🎤
+											<a class="item-link" href="https://open.spotify.com/artist/{{ item.artist.spotifyId }}" target="_blank" rel="noopener">
+												{{ item.artist.name }}
+											</a>
+										{% elseif item.type.value == 'album' %}
+											💿
+											<a class="item-link" href="https://open.spotify.com/album/{{ item.album.spotifyId }}" target="_blank" rel="noopener">
+												{{ item.album.name }}
+											</a>
+										{% endif %}
+									</h3>
+
+									{% if item.album and item.album.artists %}
+										<p class="item-subtitle">by
+											{{ item.album.artists|map(a => a.name)|join(', ') }}</p>
+									{% endif %}
+
+									{# {% if item.album and item.album.releaseDate %}
+																	<p class="item-meta">Released:
+																		{{ item.album.releaseDate|date('Y-m-d') }}</p>
+																{% endif %} #}
+								</div>
+							</div>
+
+							<div class="item-card-face item-card-face--back">
+								<div class="item-content">
+
+									<textarea class="item-note" data-item-id="{{ item.id }}" placeholder="Add a note..." cols="35" rows="50" wrap="hard">
+										{% if item.note %}
+											{{ item.note }}
+										{% endif %}
+									</textarea>
+
+									<div class="item-status">
+										{% if item.status %}
+											<select class="status-select" data-item-id="{{ item.id }}">
+												{% for statusOption in ['planned', 'listening', 'completed'] %}
+													<option value="{{ statusOption }}" {% if item.status.value == statusOption %} selected {% endif %}>
+														{{ statusOption }}
+													</option>
+												{% endfor %}
+											</select>
+										{% endif %}
+									</div>
+
+									<div class="item-date-added">
+										{% if item.dateAdded %}
+											<p>Added on:
+												{{ item.dateAdded|date('d-M-Y') }}</p>
+										{% endif %}
+									</div>
+								</div>
+							</div>
+
+							{{ include('backlog/_delete_item.html.twig') }}
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+		{% endif %}
+		{{ include('backlog/_delete_form.html.twig') }}
+	{% endblock %}

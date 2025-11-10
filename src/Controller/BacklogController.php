@@ -245,6 +245,7 @@ final class BacklogController extends AbstractController
         $item = new BacklogItem();
         $item->setBacklog($backlog);
         $item->setStatus(BacklogItemStatus::PLANNED);
+        $item->setDateAdded(new \DateTime());
 
         if ($type === 'artist') {
             $item->setType(BacklogItemType::ARTIST);

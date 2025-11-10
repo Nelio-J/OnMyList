@@ -1,3 +1,15 @@
+.btn {
+    color: black;
+    background-color: #3bb641;
+    border-color: #3bb641;
+    border-radius: 0.5rem;
+    font-weight: bold;
+}
+
+.btn-delete-backlog {
+    display: inline-block;
+}
+
 .delete-item-button {
     position: absolute;
     top: 1rem;
@@ -20,4 +32,26 @@
 
 .delete-item-button:hover {
     color: black;
+}
+
+.backlog-actions {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 5rem;
+    margin-bottom: 2rem;
+}
+
+.sort-items-select {
+    background-color: #3bb641;
+    color: black;
+    border-color: #3bb641;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    margin-right: 1rem;
+}
+
+.sort-items-select:not([multiple]) {
+    background-image:
+      linear-gradient(45deg, transparent 49%, #000 51%),
+      linear-gradient(135deg, #000 51%, transparent 49%);
 }

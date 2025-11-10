@@ -114,3 +114,11 @@
   bottom: 1rem;
   right: 1rem;
 }
+
+.item-date-added {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 1rem;
+  margin-top: 1rem;
+  font-weight: 700;
+}

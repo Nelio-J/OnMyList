@@ -5,6 +5,7 @@ namespace App\Entity;
 use App\Enum\BacklogItemStatus;
 use App\Enum\BacklogItemType;
 use App\Repository\BacklogItemRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
@@ -45,6 +46,9 @@ class BacklogItem
 
     #[ORM\Column(enumType: BacklogItemType::class)]
     private ?BacklogItemType $type = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
+    private ?\DateTime $date_added = null;
 
     public function getId(): ?int
     {
@@ -119,6 +123,18 @@ class BacklogItem
     public function setType(BacklogItemType $type): static
     {
         $this->type = $type;
+
+        return $this;
+    }
+
+    public function getDateAdded(): ?\DateTime
+    {
+        return $this->date_added;
+    }
+
+    public function setDateAdded(?\DateTime $date_added): static
+    {
+        $this->date_added = $date_added;
 
         return $this;
     }
