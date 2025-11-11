@@ -14,21 +14,22 @@
 
 {% block body %}
 	<div class="backlog-header">
-		<a href="{{ path('app_backlog_index') }}">|--back to backlog overview</a> 
+		<a href="{{ path('app_backlog_index') }}">{{ ux_icon('material-symbols:arrow-back-rounded', {class: 'back-arrow-icon'}) }}back to backlog overview</a> 
 			<div class="backlog-title-wrapper"> 
 				<h2 class="title"> {{ backlog.name }} </h2>
-				<a class="edit-title" href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">edit</a>
+				<a href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}" alt="Edit title" aria-label="Edit title">{{ ux_icon('mingcute:edit-line', {class: 'edit-title-icon'}) }}</a>
 			</div>
 			<p class="description">{{ backlog.description }}</p>
 		</div>
 
 		<div class="backlog-actions">
-			<select class="sort-items-select" autocomplete="off">
-				<option value="" disabled selected>Sort by</option>
-				<option value="name">Name (A-Z)</option>
-				<option value="nameDesc">Name (Z-A)</option>
-				<option value="dateAdded">Date Added (Newest)</option>
-				<option value="dateAddedDesc">Date Added (Oldest)</option>
+			<label for="sort-select" class="sort-label">Sort by:</label>
+			<select id="sort-select" class="sort-items-select" autocomplete="off" aria-label="Sort backlog items">
+				<option value="" aria-label="Sort by" disabled selected></option>
+				<option value="name" aria-label="Name (A-Z)">Name (A-Z)</option>
+				<option value="nameDesc" aria-label="Name (Z-A)">Name (Z-A)</option>
+				<option value="dateAdded" aria-label="Date Added (Newest)">Date Added (Newest)</option>
+				<option value="dateAddedDesc" aria-label="Date Added (Oldest)">Date Added (Oldest)</option>
 			</select>
 			
 			<fieldset class="filter-items">
@@ -83,22 +84,13 @@
 										<p class="item-subtitle">by
 											{{ item.album.artists|map(a => a.name)|join(', ') }}</p>
 									{% endif %}
-
-									{# {% if item.album and item.album.releaseDate %}
-																	<p class="item-meta">Released:
-																		{{ item.album.releaseDate|date('Y-m-d') }}</p>
-																{% endif %} #}
 								</div>
 							</div>
 
 							<div class="item-card-face item-card-face--back">
 								<div class="item-content">
 
-									<textarea class="item-note" data-item-id="{{ item.id }}" placeholder="Add a note..." cols="35" rows="50" wrap="hard">
-										{% if item.note %}
-											{{ item.note }}
-										{% endif %}
-									</textarea>
+									<textarea class="item-note" data-item-id="{{ item.id }}" placeholder="Add a note..." cols="35" rows="50" wrap="hard">{% if item.note %}{{ item.note }}{% endif %}</textarea>
 
 									<div class="item-status">
 										{% if item.status %}
