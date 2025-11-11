@@ -14,28 +14,36 @@
 
 {% block body %}
 	<div class="backlog-header">
-		<a href="{{ path('app_backlog_index') }}">
-			<--{{backlog.name}}</h2 back to backlog overview</a> <div class="backlog-title-wrapper"> <h2 class="title">>
+		<a href="{{ path('app_backlog_index') }}">|--back to backlog overview</a> 
+			<div class="backlog-title-wrapper"> 
+				<h2 class="title"> {{ backlog.name }} </h2>
 				<a class="edit-title" href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">edit</a>
 			</div>
 			<p class="description">{{ backlog.description }}</p>
 		</div>
 
 		<div class="backlog-actions">
-			<select class="sort-items-select">
+			<select class="sort-items-select" autocomplete="off">
 				<option value="" disabled selected>Sort by</option>
 				<option value="name">Name (A-Z)</option>
 				<option value="nameDesc">Name (Z-A)</option>
 				<option value="dateAdded">Date Added (Newest)</option>
 				<option value="dateAddedDesc">Date Added (Oldest)</option>
 			</select>
-			{{ include('components/_button.html.twig', {
-			classname: 'filter-items',
-			action: 'filter',			
-			type: 'button',		
-			label: 'Filter by artist/album',
-		})
-		}}
+			
+			<fieldset class="filter-items">
+				<legend>Filter backlog by:</legend>
+
+				<div>
+					<input type="checkbox" id="artist" name="artist" autocomplete="off" />
+					<label for="artist">Artist</label>
+				</div>
+
+				<div>
+					<input type="checkbox" id="album" name="album" autocomplete="off" />
+					<label for="album">Album</label>
+				</div>
+			</fieldset>
 		</div>
 
 		{% if backlog.items is empty %}
@@ -46,6 +54,7 @@
 					<article class="item-card"  
 					data-name="{{ item.type.value == 'artist' ? item.artist.name : item.album.name }}" 
 					data-date-added="{{ item.dateAdded ? item.dateAdded|date('c') : '' }}"
+					data-type="{{ item.type.value }}"
 					>
 						<div class="item-card-inner">
 							<div class="item-card-face item-card-face--front">

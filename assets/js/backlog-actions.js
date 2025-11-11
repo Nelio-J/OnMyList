@@ -1,3 +1,6 @@
+// Functionality for sorting and filtering items in the backlog
+
+// Sort items
 const grid = document.querySelector('.items-grid');
 
 document.querySelectorAll('.sort-items-select').forEach(select => {
@@ -33,4 +36,32 @@ function sortItems(value) {
 
     grid.innerHTML = '';
     itemsArray.forEach(item => { grid.appendChild(item.node); });
+}
+
+
+// Filter items
+document.querySelectorAll('.filter-items input[type="checkbox"]').forEach(checkbox => {
+  checkbox.addEventListener('change', filterItems);
+});
+
+function filterItems() {
+    // Collect the IDs of all checked filter checkboxes under the .filter-items container and store them in an array
+    const checkedItems = Array.from(document.querySelectorAll('.filter-items input[type="checkbox"]:checked')).map(cb => cb.id);
+
+    console.log('Checked items:', checkedItems);
+
+    const nodes = Array.from(grid.querySelectorAll('.item-card'));
+
+    nodes.forEach(node => {
+        const itemType = node.dataset.type;
+
+        // Show item if no filters are checked or if its type is among the checked filters
+        if (checkedItems.length === 0 || checkedItems.includes(itemType)) {
+            node.style.display = '';
+        }
+        // Else if the item's type is not in the checked filters, hide it
+        else {
+            node.style.display = 'none';
+        }
+    });
 }
