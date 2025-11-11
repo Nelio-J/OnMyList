@@ -46,9 +46,10 @@ document.querySelectorAll('.filter-items input[type="checkbox"]').forEach(checkb
 
 function filterItems() {
     // Collect the IDs of all checked filter checkboxes under the .filter-items container and store them in an array
-    const checkedItems = Array.from(document.querySelectorAll('.filter-items input[type="checkbox"]:checked')).map(cb => cb.id);
+    const checkedItems = document.querySelectorAll('.filter-items input[type="checkbox"]:checked');
+    const itemsArray = Array.from(checkedItems).map(cb => cb.id);
 
-    console.log('Checked items:', checkedItems);
+    console.log('Checked items:', itemsArray);
 
     const nodes = Array.from(grid.querySelectorAll('.item-card'));
 
@@ -56,7 +57,7 @@ function filterItems() {
         const itemType = node.dataset.type;
 
         // Show item if no filters are checked or if its type is among the checked filters
-        if (checkedItems.length === 0 || checkedItems.includes(itemType)) {
+        if (itemsArray.length === 0 || itemsArray.includes(itemType)) {
             node.style.display = '';
         }
         // Else if the item's type is not in the checked filters, hide it
