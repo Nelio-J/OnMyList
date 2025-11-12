@@ -8,6 +8,7 @@
 
 .btn-delete-backlog {
     display: inline-block;
+    margin-top: 5rem;
 }
 
 .delete-item-button {
@@ -73,14 +74,33 @@
     font-weight: bold;
 }
 
-@media (max-width: 600px) {
-    .backlog-actions {
-        flex-direction: column;
-        align-items: flex-end;
-    }
+@media (max-width: 924px) {
+  /* Stack action groups vertically */
+  .backlog-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: 0.75rem;
+  }
 
-    .sort-items-select {
-        margin-bottom: 1rem;
-        margin-right: 0;
-    }
+  .sort-label {
+    margin-top: 0;
+  }
+
+  .sort-items-select {
+    width: 100%;
+    margin-top: 0;
+    margin-bottom: 1rem;
+  }
+
+  .filter-items {
+    width: 100%;
+    display: flex;
+    gap: 2rem;
+    flex-wrap: wrap;
+    padding: 0.5rem;
+    align-items: center;
+  }
 }
+

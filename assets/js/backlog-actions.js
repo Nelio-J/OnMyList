@@ -66,3 +66,21 @@ function filterItems() {
         }
     });
 }
+
+// Search through items
+const searchInput = document.querySelector('#search-backlog-items');
+
+searchInput.addEventListener('input', (e)=>{
+    const searchString = e.target.value.toLowerCase();
+
+    const nodes = Array.from(grid.querySelectorAll('.item-card'));
+
+    nodes.forEach(node => {
+        const name = node.dataset.name.toLowerCase();
+        const subtitle = node.dataset.subtitle ? node.dataset.subtitle.toLowerCase() : '';
+
+        const matches = name.includes(searchString) || subtitle.includes(searchString);
+
+        node.style.display = matches ? '' : 'none';
+    });
+});

@@ -11,5 +11,6 @@ import './styles/app.css';
 import './styles/header.css';
 import './styles/itemcard.css';
 import './styles/buttons.css';
+import './styles/forms.css';
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');
