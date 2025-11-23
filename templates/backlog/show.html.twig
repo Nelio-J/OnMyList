@@ -14,9 +14,9 @@
 
 {% block body %}
 		<div class="backlog-header">
-			<a href="{{ path('app_backlog_index') }}">{{ ux_icon('material-symbols:arrow-back-rounded', {class: 'back-arrow-icon'}) }}back to backlog overview</a> 
+			{# <a href="{{ path('app_backlog_overview') }}">{{ ux_icon('material-symbols:arrow-back-rounded', {class: 'back-arrow-icon'}) }}back to backlog overview</a>  #}
 			<div class="backlog-title-wrapper"> 
-				<h2 class="title"> {{ backlog.name }} </h2>
+				<h1 class="title" style="grid-column-start: 2"> {{ backlog.name }} </h1>
 				<a href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}" alt="Edit title" aria-label="Edit title">{{ ux_icon('mingcute:edit-line', {class: 'edit-title-icon'}) }}</a>
 			</div>
 			<p class="description">{{ backlog.description }}</p>
@@ -62,7 +62,7 @@
 		</div>
 
 		{% if backlog.items is empty %}
-			<p>No items in this backlog yet.</p>
+			<p class="no-items-message">No items in this backlog yet.</p>
 		{% else %}
 			<div class="items-grid">
 				{% for item in backlog.items %}
@@ -123,7 +123,7 @@
 
 									<div class="item-date-added">
 										{% if item.dateAdded %}
-											<p>Added on:
+											<p><strong>Added on:</strong>
 												{{ item.dateAdded|date('d-M-Y') }}</p>
 										{% endif %}
 									</div>

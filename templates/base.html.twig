@@ -13,6 +13,9 @@
         {% endblock %}
     </head>
     <body>
+        {% block header %}
+            {{ include('components/_nav.html.twig') }}
+        {% endblock %}
         {% block body %}{% endblock %}
     </body>
 </html>

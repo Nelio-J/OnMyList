@@ -4,11 +4,28 @@
     border-color: #3bb641;
     border-radius: 0.5rem;
     font-weight: bold;
+    min-width: 8rem;
+}
+
+.btn-form {
+    display: inline-block;
 }
 
 .btn-delete-backlog {
     display: inline-block;
-    margin-top: 5rem;
+    background-color: #AE1313;
+    border-color: #AE1313;
+    color: white;
+    margin-top: 3rem;
+}
+
+.open-backlog-modal {
+  margin: 0.75rem 0.15rem;
+}
+
+.modal-button {
+  
+  margin-top: 1rem;
 }
 
 .delete-item-button {
@@ -53,8 +70,6 @@
 .sort-items-select {
     background-color: #3bb641;
     color: black;
-    border-color: #3bb641;
-    border-radius: 0.5rem;
     font-weight: bold;
     margin-right: 1rem;
     margin-top: 0.75rem;

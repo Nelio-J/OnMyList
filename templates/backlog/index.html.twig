@@ -1,42 +1,39 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Backlog index{% endblock %}
+{% block title %}On My List{% endblock %}
 
 {% block body %}
-    <h1>Backlog index</h1>
+    <div class="background-image">
+        <img src="{{ asset('images/LastFMcollageAllTime2025.jpg') }}" alt="Background Image" class="bg-image">
+        
+        <header class="header-content">
 
-    <div class="search-bar">
-        <form action="{{ path('app_spotify_search') }}" method="get">
-            <input type="text" name="query" placeholder="Search..." required>
-            <button type="submit">Search</button>
-        </form>
+            <img src="{{ asset('images/Logo_transparent.png') }}" alt="Logo Image" class="main-logo">
+
+            <div class="search-bar">
+
+                <form action="{{ path('app_spotify_search') }}" method="get">
+                    <div class="sfdsfdsf" autocomplete="off" aria-label="Search backlog items">
+                        <h2 class="title title-subtitle">Which artist have you been meaning to listen to? Which album is on your list?</h2>
+                        <label for="search-spotify" class="search-label">Search for an artist or album:</label>
+                        <input 
+                        id="search-spotify" 
+                        class="search-spotify-input" 
+                        type="text" 
+                        name="query" 
+                        placeholder="..." 
+                        required                             
+                        aria-label="Search backlog for artists or albums in your backlog"
+                        >
+                        <button type="submit" class="btn">Search</button>
+                    </div>
+                </form>
+            </div>
+        </header>
+
+        {# <a href="{{ path('app_backlog_new') }}" class="btn btn-primary">Start a new Backlog</a>
+
+        <a href="{{ path('app_backlog_overview') }}">Backlog overview</a> #}
     </div>
 
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Name</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for backlog in backlogs %}
-            <tr>
-                <td>{{ backlog.id }}</td>
-                <td>{{ backlog.name }}</td>
-                <td>
-                    <a href="{{ path('app_backlog_show', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">show</a>
-                    <a href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="3">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_backlog_new') }}">Create new</a>
 {% endblock %}

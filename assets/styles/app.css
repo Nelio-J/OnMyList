@@ -15,6 +15,8 @@
 body {
     display: block;
     padding: 4rem;
+    padding-top: calc(var(--nav-height) + 1rem);
+    box-sizing: border-box;
 }
 
 ::backdrop {
@@ -29,9 +31,9 @@ body {
 }
 
 a {
-  color: #ffb300;
+  color: #3bb641;
 }
 
 a:visited {
-  color: #ffb300;
+  color: #3bb641;
 }

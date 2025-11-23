@@ -8,9 +8,12 @@ import './bootstrap.js';
 
 /* AssetMapper makes it possibles to import CSS files here */
 import './styles/app.css';
+import './styles/nav.css';
 import './styles/header.css';
 import './styles/itemcard.css';
 import './styles/buttons.css';
 import './styles/forms.css';
+import './styles/images.css';
+import './styles/list.css';
 
 console.log('This log comes from assets/app.js - welcome to AssetMapper! 🎉');

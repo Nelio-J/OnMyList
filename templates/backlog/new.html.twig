@@ -3,9 +3,10 @@
 {% block title %}New Backlog{% endblock %}
 
 {% block body %}
-    <h1>Create new Backlog</h1>
+    {# <a href="{{ path('app_backlog_overview') }}">{{ ux_icon('material-symbols:arrow-back-rounded', {class: 'back-arrow-icon'}) }}back to backlog overview</a> #}
+
+    <h1 class="title">Create new Backlog</h1>
 
     {{ include('backlog/_form.html.twig') }}
 
-    <a href="{{ path('app_backlog_index') }}">back to list</a>
 {% endblock %}

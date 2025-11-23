@@ -24,10 +24,16 @@ use Symfony\Component\Uid\Uuid;
 #[Route('/backlog')]
 final class BacklogController extends AbstractController
 {
-    #[Route(name: 'app_backlog_index', methods: ['GET'])]
+    #[Route( name: 'app_backlog_index', methods: ['GET'])]
     public function index(BacklogRepository $backlogRepository): Response
     {
-        return $this->render('backlog/index.html.twig', [
+        return $this->render('backlog/index.html.twig');
+    }
+
+    #[Route('/overview', name: 'app_backlog_overview', methods: ['GET'])]
+    public function overview(BacklogRepository $backlogRepository): Response
+    {
+        return $this->render('backlog/overview.html.twig', [
             'backlogs' => $backlogRepository->findAll(),
         ]);
     }
@@ -38,7 +44,7 @@ final class BacklogController extends AbstractController
         $query = $request->query->get('query', '');
 
         if (empty($query)) {
-            return $this->redirectToRoute('app_backlog_index');
+            return $this->redirectToRoute('app_backlog_overview');
         }
 
         $results = $spotifyAPI->search($query);
@@ -64,7 +70,7 @@ final class BacklogController extends AbstractController
             $entityManager->persist($backlog);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_backlog_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backlog_overview', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('backlog/new.html.twig', [
@@ -111,7 +117,10 @@ final class BacklogController extends AbstractController
 
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_backlog_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_backlog_show', [
+                'uuid' => $backlog->getUuid(), 
+                'slug' => $backlog->getSlug()
+            ], Response::HTTP_SEE_OTHER);
         }
 
         return $this->render('backlog/edit.html.twig', [
@@ -136,7 +145,7 @@ final class BacklogController extends AbstractController
             $entityManager->flush();
         }
 
-        return $this->redirectToRoute('app_backlog_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_backlog_overview', [], Response::HTTP_SEE_OTHER);
     }
 
     
@@ -158,7 +167,7 @@ final class BacklogController extends AbstractController
 
         if (!$backlog) {
             $this->addFlash('error', 'Backlog not found.');
-            return $this->redirectToRoute('app_backlog_index');
+            return $this->redirectToRoute('app_backlog_overview');
         }
 
         $type = $request->request->get('type');
@@ -169,7 +178,7 @@ final class BacklogController extends AbstractController
 
         if (!$type || !$spotifyId) {
             $this->addFlash('error', 'Missing data.');
-            return $this->redirectToRoute('app_backlog_index');
+            return $this->redirectToRoute('app_backlog_overview');
         }
 
         // Logic to add the item to the backlog
@@ -239,7 +248,7 @@ final class BacklogController extends AbstractController
 
         if ($existing) {
             $this->addFlash('info', 'This item is already in this backlog.');
-            return $this->redirectToRoute('app_backlog_index');
+            return $this->redirectToRoute('app_backlog_overview');
         }
 
         $item = new BacklogItem();
@@ -259,7 +268,7 @@ final class BacklogController extends AbstractController
         $entityManager->flush();
 
         $this->addFlash('success', 'Added to backlog.');
-        return $this->redirectToRoute('app_backlog_index');
+        return $this->redirectToRoute('app_backlog_overview');
     }
 
     #[Route('/deleteitem/{id}', name: 'app_backlog_deleteitem', methods: ['POST'])]
@@ -277,7 +286,7 @@ final class BacklogController extends AbstractController
         }
 
         $this->addFlash('success', 'Item removed from backlog.');
-        return $this->redirectToRoute('app_backlog_index', [], Response::HTTP_SEE_OTHER);
+        return $this->redirectToRoute('app_backlog_overview', [], Response::HTTP_SEE_OTHER);
     }
 
     #[Route('/item/edit-meta', name: 'app_backlog_edit_meta', methods: ['POST'])]
