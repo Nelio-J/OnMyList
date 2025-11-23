@@ -1,0 +1,135 @@
+.items-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  gap: 5rem;
+}
+
+.no-items-message {
+  font-size: 1.5rem;
+  font-style: italic;
+  color: #ffffff;
+  text-align: center;
+  margin-top: 5rem;
+  margin-bottom: 5rem;
+}
+
+.item-card {
+  /* display: flex;
+  flex-direction: column;
+  position: relative; */
+  border-radius: 12px;
+  border-color: #1d1d1d;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  overflow: hidden;
+  padding: 0;
+}
+
+.item-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.15);
+  transition: all 0.3s ease;
+}
+
+.item-card-inner {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  display: grid;
+  grid-template-rows: repeat(auto-fill, minmax(500px, 1fr));
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+  cursor: pointer;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.item-card-inner.is-flipped {
+  transform: rotateY(180deg);
+}
+
+.item-card-face {
+  width: 100%;
+  height: 100%;
+  transform-style: preserve-3d;
+  border-radius: 16px;
+  box-shadow: 0px 3px 18px 3px rgba(0, 0, 0, 0.2);
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+.item-card-face--back {
+  height: 100%;
+  position: absolute;
+  transform: rotateY(180deg);
+  -webkit-transform: rotateY(180deg);
+}
+
+.item-image {
+  display: block;
+  width: 100%;
+  object-fit: cover;
+  border-bottom-left-radius: 0;
+  border-bottom-right-radius: 0;
+  opacity: 1;
+} 
+
+.item-content {
+  background-color: #3bb641;
+  color: black;
+  padding: 1rem;
+  height: 100%;
+}
+
+.item-title {
+  font-size: 2rem;
+  font-weight: bold;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  line-clamp: 3;
+  -webkit-line-clamp: 3;
+  padding-bottom: 5px;
+  margin-bottom: 0;
+  height: 7rem;
+}
+
+.item-link {
+  color: black;
+}
+
+.item-link:visited {
+  color: inherit;
+}
+
+.item-subtitle, .item-meta {
+  font-size: 1.15rem;
+  font-weight: 600;
+  font-style: italic;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  margin: 0.75rem 0.15rem;
+}
+
+.item-note {
+  width: 100%;
+  max-height: 80%;
+  font-size: 1.15rem;
+  overflow: auto;
+  margin: 0.75rem 0;
+}
+
+.item-status {
+  position: absolute;
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.item-date-added {
+  position: absolute;
+  bottom: 0.5rem;
+  left: 1rem;
+  margin-top: 1rem;
+  font-weight: 700;
+}

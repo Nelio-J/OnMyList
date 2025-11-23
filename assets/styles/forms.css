@@ -1,0 +1,56 @@
+input, textarea, select {
+    border-color: #3bb641;
+    border-radius: 0.5rem;
+    margin-bottom: 0;
+}
+
+.search-spotify-input {
+    padding: 0.5rem;
+    margin-right: 1rem;
+    width: 90%;
+}
+
+.search-items-wrapper {
+    position: absolute;
+    left: 4rem;
+    margin-top: -2.25rem;
+}
+
+.search-label {
+    font-weight: bold;
+    color: #3bb641;
+    margin-right: 1rem;
+    margin-top: 1.25rem;
+    align-self: flex-start;
+}
+
+.form-label {
+    font-weight: bold;
+    color: #3bb641;
+    margin-bottom: 0.5rem;
+}
+
+.form-control {
+    padding: 0.5rem;
+    width: 100%;
+    margin-bottom: 3rem;
+}
+
+@media (max-width: 924px) {
+  /* Stop absolute positioning so search field scales properly */
+  .search-items-wrapper {
+    position: static;
+    margin: 0 0 0.75rem 0;
+    width: 100%;
+  }
+
+  .search-label {
+    margin-top: 0.5rem;
+    white-space: nowrap;
+  }
+
+  .search-input {
+    min-width: 0;
+    width: 100%;
+  }
+}

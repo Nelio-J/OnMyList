@@ -1,0 +1,87 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Search Results for "{{ query }}"{% endblock %}
+
+{% block javascripts %}
+    {% block importmap %}{{ importmap('app') }}{% endblock %}
+    <script src="{{ asset('js/modal.js') }}" type="module" defer></script>
+{% endblock %}
+
+{% block body %}
+
+  <header class="header-content">
+  <h1 class="title">Search results for: "{{ query }}"</h1>
+
+  <dialog id="backlogDialog" class="backlog-modal">
+  <form id="backlogForm" method="post" action="{{ path('app_backlog_additem') }}">
+    <input type="hidden" name="type" id="modal-type">
+    <input type="hidden" name="name" id="modal-name">
+    <input type="hidden" name="spotify_id" id="modal-spotify-id">
+    <input type="hidden" name="image" id="modal-image">
+    <input type="hidden" name="release_date" id="modal-release-date">
+    <input type="hidden" name="artists" id="modal-artists">
+
+    <p>
+      <label> Choose a backlog:
+        <select name="backlog_uuid" id="modal-backlog-select" required>
+          {% if backlogs is empty %}
+            <option value="" aria-label="No backlogs yet" disabled selected>No backlogs yet</option>
+          {% endif %}
+          {% for backlog in backlogs %}
+            <option value="{{ backlog.uuid }}">{{ backlog.name }}</option>
+          {% endfor %}
+        </select>
+        <a href="{{ path('app_backlog_new') }}">{{ ux_icon('mynaui:plus-solid', {class: 'back-arrow-icon'}) }}</a>
+      </label>
+    </p>
+
+    <div>
+      <button value="cancel" formmethod="dialog" type="button" class="btn modal-button" onclick="document.getElementById('backlogDialog').close()">Cancel</button>
+      <button id="confirmButton" type="submit" class="btn modal-button">Add</button>
+    </div>
+  </form>
+  </dialog>
+
+  </header>
+  
+  <div class="items-grid results">
+    {% for item in results %}
+      <div class="item-card result">
+        {% if item.image %}
+          <img src="{{ item.image }}" alt="{{ item.name }}" class="item-image">
+        {% else %}
+          <img class="item-image placeholder-thumbnail"></img>
+        {% endif %}
+
+        <h3 class="item-title name">{{ item.name }}</h3>
+
+        {% if item.type == 'artist' %}
+          {# <p><strong>Type:</strong> Artist</p> #}
+        {% elseif item.type == 'album' %}
+          {# <p><strong>Type:</strong> Album</p> #}
+          <p class="item-subtitle"><strong>Artist:</strong> {{ item.artist_display }}</p>
+          <p class="item-meta"><strong>Released:</strong> {{ item.release_date }}</p>
+        {% endif %}
+        
+        <button 
+          type="button"
+          class="btn open-backlog-modal"
+          data-type="{{ item.type }}"
+          data-name="{{ item.name }}"
+          data-spotify-id="{{ item.spotify_id }}"
+          data-image="{{ item.image }}"
+          {% if item.type == 'album' %}
+            data-release-date="{{ item.release_date }}"
+            data-artists="{{ item.artists|json_encode() }}"
+          {% endif %}
+        >
+          Add to Backlog
+        </button>
+      </div>
+    {% else %}
+      <p>No results found.</p>
+      
+    {% endfor %}
+  </div>
+  
+{% endblock %}

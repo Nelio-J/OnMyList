@@ -1,0 +1,46 @@
+.header-content {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    background-color: inherit;
+    border: none;
+}
+
+.backlog-title-wrapper {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    align-items: center;
+    gap: 1rem;
+}
+
+.title {
+    justify-self: center;
+    color: #3bb641;
+    padding: 2rem 0;
+}
+
+.title-index {
+    font-size: 7rem;
+    text-shadow: 2px 2px 4px rgb(0, 0, 0);
+}
+
+.title-subtitle {
+    text-shadow: 2px 2px 4px rgb(0, 0, 0);
+}
+
+.edit-title-icon {
+    height: 1.5em;
+    justify-self: start;
+    align-self: center;
+    color: #3bb641;
+    margin-top: 1rem;
+    margin-left: 1rem;
+    vertical-align: middle;
+}
+
+.description {
+    color: #3bb641;
+    display: flex;
+    justify-content: center;
+}

@@ -1,0 +1,79 @@
+:root {
+  --nav-height: 7.5rem;
+}
+
+.primary-nav a,
+.primary-nav a:visited {
+    display: inline-flex;
+    align-items: center;
+    height: 100%;
+    padding: 0.6rem 1rem;
+    line-height: normal;
+    border: var(--border-width) solid #3bb641;
+    border-radius: var(--standard-border-radius);
+    color: #3bb641;
+    text-decoration: none;
+    /* margin: 0 .5rem 1rem; */
+}
+
+.primary-nav a:hover {
+    border: var(--border-width)solid #3bb641;
+    color: #ebebeb;
+    background-color: #3bb6411a;
+}
+
+.primary-nav {
+    display: flex;
+    align-items: center;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: var(--nav-height);
+    z-index: 1000;
+    background-color: #1d1d1d;
+    padding: 0.5rem 2rem;
+    overflow: hidden;
+}
+
+.primary-nav-list {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-left: 4rem;
+    padding: 0;
+}
+
+.primary-nav-list-item {
+    font-weight: bold;
+    font-size: 1rem;
+}
+
+.search-bar {
+    margin-left: auto;
+    margin-top: 0.5rem;
+    font-size: inherit;
+}
+
+@media (max-width: 900px) {
+    .primary-nav {
+        flex-wrap: wrap;
+        align-items: center;
+        height: auto;
+    }
+
+    /* keep the nav list next to the logo (don't let it wrap to a new line) */
+    .primary-nav-list {
+        order: 1;
+    }
+
+    /* force the search bar onto its own row beneath the list/logo */
+    .search-bar {
+        order: 2;
+        width: 100%;
+        margin-left: 0;
+        margin-top: 0.5rem;
+        display: block;
+    }
+}

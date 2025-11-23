@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Backlog{% endblock %}
+
+{% block body %}
+    {# <a href="{{ path('app_backlog_show', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">{{ ux_icon('material-symbols:arrow-back-rounded', {class: 'back-arrow-icon'}) }}back to backlog</a> #}
+    
+    <div class="form-container">
+        <h1 class="title">Edit Backlog</h1>
+
+        {{ include('backlog/_form.html.twig', {'button_label': 'Update'}) }}
+
+        {{ include('backlog/_delete_form.html.twig') }}
+    </div>
+{% endblock %}

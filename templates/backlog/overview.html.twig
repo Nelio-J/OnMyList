@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Backlogs{% endblock %}
+
+{% block body %}
+
+    <header class="header-content">
+        <h1 class="title">Backlogs</h1>
+    </header>
+
+    <a href="{{ path('app_backlog_new') }}" class="create-link">Create a new backlog {{ ux_icon('mynaui:plus-solid', {class: 'back-arrow-icon'}) }}</a>
+
+    {% if backlogs is empty %}
+		<p class="no-items-message">No backlogs found. Click <a href="{{ path('app_backlog_new') }}">here</a> to start one</p>
+	{% else %}
+    
+    <div class="items-grid">
+    {% for backlog in backlogs %}
+        <a href="{{ path('app_backlog_show', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">
+            <div class="list-item">
+                <div class="list-thumbnails">
+                    {% set thumbs = backlog.items|slice(0,4) %}
+
+                    {% for i in 0..3 %}
+                        {% set item = thumbs[i] ?? null %}
+                        {% if item %}
+                            <div class="thumbnail">
+                                {% if item.type.value == 'artist' and item.artist %}
+                                    <img src="{{ item.artist.image }}" alt="{{ item.artist.name }}" class="item-image">
+                                {% elseif item.type.value == 'album' and item.album and item.album.image %}
+                                    <img src="{{ item.album.image }}" alt="{{ item.album.name }}" class="item-image">
+                                {% else %}
+                                    <div class="placeholder-thumbnail" aria-hidden="true"></div>
+                                {% endif %}
+                            </div>
+                        {% else %}
+                            <div class="placeholder-thumbnail" aria-hidden="true"></div>
+                        {% endif %}
+                    {% endfor %}
+                </div>
+                <p class="item-title">{{ backlog.name }}</p>
+                {# <p>
+                    <a href="{{ path('app_backlog_show', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">show</a>
+                    <a href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">edit</a>
+                </p> #}
+            </div>
+        </a>
+    {% endfor %}
+    {% endif %}
+    </div>
+
+{% endblock %}

@@ -1,0 +1,5 @@
+{{ form_start(form) }}
+    {{ form_widget(form) }}
+    <button class="btn btn-form" type="button" onclick="window.history.back()">Cancel</button>
+    <button class="btn btn-form" type="submit">{{ button_label|default('Save') }}</button>
+{{ form_end(form) }}
