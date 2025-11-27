@@ -27,11 +27,11 @@ function sortItems(value) {
     }
 
     if (value === 'dateAdded') {
-        itemsArray.sort((a, b) => { return new Date(a.dateAdded) - new Date(b.dateAdded); });
+        itemsArray.sort((a, b) => { return new Date(b.dateAdded) - new Date(a.dateAdded); });
     }
 
     if (value === 'dateAddedDesc') {
-        itemsArray.sort((a, b) => { return new Date(b.dateAdded) - new Date(a.dateAdded); });
+        itemsArray.sort((a, b) => { return new Date(a.dateAdded) - new Date(b.dateAdded); });
     }
 
     grid.innerHTML = '';

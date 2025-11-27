@@ -17,7 +17,7 @@
 			{# <a href="{{ path('app_backlog_overview') }}">{{ ux_icon('material-symbols:arrow-back-rounded', {class: 'back-arrow-icon'}) }}back to backlog overview</a>  #}
 			<div class="backlog-title-wrapper"> 
 				<h1 class="title" style="grid-column-start: 2"> {{ backlog.name }} </h1>
-				<a href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}" alt="Edit title" aria-label="Edit title">{{ ux_icon('mingcute:edit-line', {class: 'edit-title-icon'}) }}</a>
+				<a href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}" alt="Edit title" aria-label="Edit title" class="edit-title-icon-wrapper">{{ ux_icon('mingcute:edit-line', {class: 'edit-title-icon'}) }}</a>
 			</div>
 			<p class="description">{{ backlog.description }}</p>
 		</div>
@@ -77,9 +77,9 @@
 						<div class="item-card-inner">
 							<div class="item-card-face item-card-face--front">
 								{% if item.type.value == 'artist' and item.artist %}
-									<img src="{{ item.artist.image }}" alt="{{ item.artist.name }}" class="item-image">
+									<img src="{{ item.artist.image }}" alt="{{ item.artist.name }}" class="item-image backlog-item-image">
 								{% elseif item.type.value == 'album' and item.album and item.album.image %}
-									<img src="{{ item.album.image }}" alt="{{ item.album.name }}" class="item-image">
+									<img src="{{ item.album.image }}" alt="{{ item.album.name }}" class="item-image backlog-item-image">
 								{% endif %}
 
 								<div class="item-content">

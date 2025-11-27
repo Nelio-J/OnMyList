@@ -202,9 +202,12 @@ final class BacklogController extends AbstractController
                 $entity->setSpotifyId($spotifyId);
                 $entity->setImage($image);
 
-                if ($releaseDate) {
+
+                if ($releaseDate && preg_match('/^\d{4}-\d{2}-\d{2}$/', $releaseDate)) {
                     $FormattedReleaseDate = \DateTime::createFromFormat('Y-m-d', $releaseDate);
                     $entity->setReleaseDate($FormattedReleaseDate);
+                } else {
+                    $entity->setReleaseDate(null);
                 }
 
                 $artistsJson = $request->request->get('artists');

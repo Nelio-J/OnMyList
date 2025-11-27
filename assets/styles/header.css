@@ -39,6 +39,10 @@
     vertical-align: middle;
 }
 
+.edit-title-icon-wrapper {
+    width: fit-content;
+}
+
 .description {
     color: #3bb641;
     display: flex;
