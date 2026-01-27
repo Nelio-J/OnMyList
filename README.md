@@ -1,10 +1,10 @@
 # On My List: Easily manage your music backlog
 
-<h1 align=center>
+<div align=center>
   <br>
   <a href="https://github.com/Nelio-J/OnMyList"><img src="https://github.com/Nelio-J/OnMyList/blob/main/assets/images/Logo_transparent.png" alt="On My List Logo" width="200"></a>
   <br>
-</h1>
+</div>
 
 <h4 align="center">An app built on top of <a href="https://symfony.com/" target="_blank">Symfony</a> to manage all the music and arist on your backlog.</h4>
 
@@ -80,5 +80,6 @@ You can then view and use the app by visiting http://127.0.0.1:8000/backlog in y
 This software uses the following open source packages:
 
 - [Symfony](https://symfony.com/)
+- [Spotify Web API](https://developer.spotify.com/documentation/web-api)
 - [MySQL](https://www.mysql.com/)
 - [XAMPP](https://www.apachefriends.org/)
