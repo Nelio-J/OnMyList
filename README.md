@@ -14,6 +14,13 @@
    <a href="#credits">Credits</a>
 </p>
 
+<br>
+
+As someone that loves music and exploring different genres, I've build up quite a backlog of music that seemed interesting to check out. This backlog was spread out over various places, such as a notepad file, notes on my phone and screenshots.
+I wanted an easy way of managing this backlog in one place. The result of this is **On My List**! By integrating the Spotify API, On My List let's you search for albums & artists and add them to a manageable list.
+<br>
+
+  
 ## Key Features
 
 * Centralize your music backlog
