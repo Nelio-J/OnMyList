@@ -36,6 +36,9 @@ class Backlog
     #[ORM\Column(length: 255)]
     private ?string $slug = null;
 
+    #[ORM\ManyToOne(inversedBy: 'backlogs')]
+    private ?User $user = null;
+
     public function __construct()
     {
         $this->uuid = Uuid::v4();
@@ -121,6 +124,18 @@ class Backlog
     public function setSlug(string $slug): static
     {
         $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

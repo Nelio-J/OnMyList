@@ -17,4 +17,23 @@
             <button type="submit" class="btn">Search</button>
         </form>
     </div>
+
+    <div>
+        {% if app.user %}
+            <ul class="primary-nav-sections primary-nav-list">
+                <li class="primary-nav-list-item">
+                    <a class="primary-nav-link" href="{{ path('app_logout') }}" class="btn">Logout</a>
+                </li>
+            </ul>
+        {% else %}
+            <ul class="primary-nav-sections primary-nav-list">
+                <li class="primary-nav-list-item">
+                    <a class="primary-nav-link" href="{{ path('app_login') }}" class="btn">Login</a>
+                </li>
+                <li class="primary-nav-list-item">
+                    <a class="primary-nav-link" href="{{ path('app_register') }}" class="btn">Sign Up</a>
+                </li>
+            </ul>
+        {% endif %}
+    </div>
 </nav>

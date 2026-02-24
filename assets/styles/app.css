@@ -13,10 +13,10 @@
 }
 
 body {
-    display: block;
-    padding: 4rem;
-    padding-top: calc(var(--nav-height) + 1rem);
-    box-sizing: border-box;
+  display: block;
+  padding: 4rem;
+  padding-top: calc(var(--nav-height) + 1rem);
+  box-sizing: border-box;
 }
 
 ::backdrop {

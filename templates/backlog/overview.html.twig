@@ -4,6 +4,15 @@
 
 {% block body %}
 
+    {% if app.user and not app.user.isVerified %}
+        <div class="alert alert-warning">
+            ⚠️ Your email is not verified.
+            <form method="post" action="{{ path('app_resend_verification') }}">
+                <button type="submit">Resend verification email</button>
+            </form>
+        </div>
+    {% endif %}
+
     <header class="header-content">
         <h1 class="title">Backlogs</h1>
     </header>
