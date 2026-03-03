@@ -3,11 +3,15 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
+    <img src="{{ asset('images/Patternpad-Stripes-Vertical-Green-Black.svg') }}" alt="Background Pattern" class="bg-pattern">
+
     {% for flash_error in app.flashes('verify_email_error') %}
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <h1>Register</h1>
+    <header class="header-content">
+        <h1 class="title">Make your account</h1>
+    </header>
 
     {{ form_errors(registrationForm) }}
 
@@ -18,7 +22,8 @@
         }) }}
         {{ form_row(registrationForm.agreeTerms) }}
 
-        <button type="submit" class="btn">Register</button>
+        {# <button type="submit" class="btn">Register</button> #}
+        {{ include('components/_button.html.twig', {'type': 'submit', 'label': 'Register'}) }}
     {{ form_end(registrationForm) }}
     <form>
         <p class="mt-3">

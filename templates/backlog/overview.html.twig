@@ -3,59 +3,63 @@
 {% block title %}Backlogs{% endblock %}
 
 {% block body %}
+    <div class="wrapper" data-controller="svg-animation">
+    	{{ include('components/background/_pattern_circles.html.twig') }}
+        {# <img src="{{ asset('images/Patternpad-Circles-Fade-Green-Black.svg') }}" alt="Background Pattern" class="bg-pattern"> #}
 
-    {% if app.user and not app.user.isVerified %}
-        <div class="alert alert-warning">
-            ⚠️ Your email is not verified.
-            <form method="post" action="{{ path('app_resend_verification') }}">
-                <button type="submit">Resend verification email</button>
-            </form>
-        </div>
-    {% endif %}
-
-    <header class="header-content">
-        <h1 class="title">Backlogs</h1>
-    </header>
-
-    <a href="{{ path('app_backlog_new') }}" class="create-link">Create a new backlog {{ ux_icon('mynaui:plus-solid', {class: 'back-arrow-icon'}) }}</a>
-
-    {% if backlogs is empty %}
-		<p class="no-items-message">No backlogs found. Click <a href="{{ path('app_backlog_new') }}">here</a> to start one</p>
-	{% else %}
-    
-    <div class="items-grid">
-    {% for backlog in backlogs %}
-        <a href="{{ path('app_backlog_show', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">
-            <div class="list-item">
-                <div class="list-thumbnails">
-                    {% set thumbs = backlog.items|slice(0,4) %}
-
-                    {% for i in 0..3 %}
-                        {% set item = thumbs[i] ?? null %}
-                        {% if item %}
-                            <div class="thumbnail">
-                                {% if item.type.value == 'artist' and item.artist %}
-                                    <img src="{{ item.artist.image }}" alt="{{ item.artist.name }}" class="item-image">
-                                {% elseif item.type.value == 'album' and item.album and item.album.image %}
-                                    <img src="{{ item.album.image }}" alt="{{ item.album.name }}" class="item-image">
-                                {% else %}
-                                    <div class="placeholder-thumbnail" aria-hidden="true"></div>
-                                {% endif %}
-                            </div>
-                        {% else %}
-                            <div class="placeholder-thumbnail" aria-hidden="true"></div>
-                        {% endif %}
-                    {% endfor %}
-                </div>
-                <p class="item-title">{{ backlog.name }}</p>
-                {# <p>
-                    <a href="{{ path('app_backlog_show', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">show</a>
-                    <a href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">edit</a>
-                </p> #}
+        {% if app.user and not app.user.isVerified %}
+            <div class="alert alert-warning">
+                ⚠️ Your email is not verified.
+                <form method="post" action="{{ path('app_resend_verification') }}">
+                    <button type="submit">Resend verification email</button>
+                </form>
             </div>
-        </a>
-    {% endfor %}
-    {% endif %}
+        {% endif %}
+
+        <header class="header-content">
+            <h1 class="title">Backlogs</h1>
+        </header>
+
+        <a href="{{ path('app_backlog_new') }}" class="create-link">Create a new backlog {{ ux_icon('mynaui:plus-solid', {class: 'back-arrow-icon'}) }}</a>
+
+        {% if backlogs is empty %}
+            <p class="no-items-message">No backlogs found. Click <a href="{{ path('app_backlog_new') }}">here</a> to start one</p>
+        {% else %}
+        
+        <div class="items-grid">
+        {% for backlog in backlogs %}
+            <a href="{{ path('app_backlog_show', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">
+                <div class="list-item">
+                    <div class="list-thumbnails">
+                        {% set thumbs = backlog.items|slice(0,4) %}
+
+                        {% for i in 0..3 %}
+                            {% set item = thumbs[i] ?? null %}
+                            {% if item %}
+                                <div class="thumbnail">
+                                    {% if item.type.value == 'artist' and item.artist %}
+                                        <img src="{{ item.artist.image }}" alt="{{ item.artist.name }}" class="item-image">
+                                    {% elseif item.type.value == 'album' and item.album and item.album.image %}
+                                        <img src="{{ item.album.image }}" alt="{{ item.album.name }}" class="item-image">
+                                    {% else %}
+                                        <div class="placeholder-thumbnail" aria-hidden="true"></div>
+                                    {% endif %}
+                                </div>
+                            {% else %}
+                                <div class="placeholder-thumbnail" aria-hidden="true"></div>
+                            {% endif %}
+                        {% endfor %}
+                    </div>
+                    <p class="item-title">{{ backlog.name }}</p>
+                    {# <p>
+                        <a href="{{ path('app_backlog_show', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">show</a>
+                        <a href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}">edit</a>
+                    </p> #}
+                </div>
+            </a>
+        {% endfor %}
+        {% endif %}
+        </div>
     </div>
 
 {% endblock %}

@@ -19,7 +19,7 @@
 .primary-nav a:hover {
     border: var(--border-width)solid #3bb641;
     color: #ebebeb;
-    background-color: #3bb6411a;
+    background-color: #3bb6418f;
 }
 
 .primary-nav {
@@ -31,7 +31,8 @@
     width: 100%;
     height: var(--nav-height);
     z-index: 1000;
-    background-color: #1d1d1d;
+    background-color: transparent;
+    box-shadow: 50px 100px 100px rgba(0,0,0,0.7) inset;
     padding: 0.5rem 2rem;
     overflow: hidden;
 }

@@ -32,7 +32,6 @@ final class BacklogController extends AbstractController
     #[Route('/backlog/overview', name: 'app_backlog_overview', methods: ['GET'])]
     public function overview(BacklogRepository $backlogRepository): Response
     {
-
         $user = $this->getUser();
         if (!$user) {
             $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
@@ -65,6 +64,11 @@ final class BacklogController extends AbstractController
     #[Route('/backlog/new', name: 'app_backlog_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        }
+
         $backlog = new Backlog();
         $form = $this->createForm(BacklogType::class, $backlog);
         $form->handleRequest($request);
@@ -90,6 +94,11 @@ final class BacklogController extends AbstractController
     #[Route('/backlog/{uuid}/{slug}', name: 'app_backlog_show', methods: ['GET'])]
     public function show(BacklogRepository $backlogRepository, string $uuid, string $slug ): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        }
+
         $backlog = $backlogRepository->findOneBy([
             'uuid' => Uuid::fromString($uuid),
             'slug' => $slug
@@ -107,6 +116,11 @@ final class BacklogController extends AbstractController
     #[Route('/backlog/{uuid}/{slug}/edit', name: 'app_backlog_edit', methods: ['GET', 'POST'], requirements: ['uuid' => '[0-9a-f-]{36}'])]
     public function edit(Request $request, BacklogRepository $backlogRepository, string $uuid, string $slug, EntityManagerInterface $entityManager, SluggerInterface $slugger): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        }
+        
         $backlog = $backlogRepository->findOneBy([
             'uuid' => Uuid::fromString($uuid),
             'slug' => $slug
@@ -140,6 +154,11 @@ final class BacklogController extends AbstractController
     #[Route('/backlog/{uuid}', name: 'app_backlog_delete', methods: ['POST'], requirements: ['uuid' => '[0-9a-f-]{36}'])]
     public function delete(Request $request, BacklogRepository $backlogRepository, string $uuid, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        }
+
         $backlog = $backlogRepository->findOneBy([
             'uuid' => Uuid::fromString($uuid)
         ]);
@@ -160,6 +179,12 @@ final class BacklogController extends AbstractController
     #[Route('/backlog/additem', name: 'app_backlog_additem', methods: ['POST'])]
     public function addToBacklog(Request $request, EntityManagerInterface $entityManager, BacklogRepository $backlogRepository, SpotifyAPIService $spotifyAPI): Response
     {
+
+        $user = $this->getUser();
+        if (!$user) {
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        }
+
         $uuid = $request->request->get('backlog_uuid');
         $backlog = null;
 
@@ -285,6 +310,11 @@ final class BacklogController extends AbstractController
     #[Route('/backlog/deleteitem/{id}', name: 'app_backlog_deleteitem', methods: ['POST'])]
     public function deleteItem(Request $request, EntityManagerInterface $entityManager, int $id): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        }
+
         $item = $entityManager->getRepository(BacklogItem::class)->find($id);
 
         if (!$item) {
@@ -303,6 +333,11 @@ final class BacklogController extends AbstractController
     #[Route('/backlog/item/edit-meta', name: 'app_backlog_edit_meta', methods: ['POST'])]
     public function editMetaData(Request $request, BacklogItemRepository $backlogItemRepository, EntityManagerInterface $entityManager): Response
     {
+        $user = $this->getUser();
+        if (!$user) {
+            $this->denyAccessUnlessGranted('IS_AUTHENTICATED_FULLY');
+        }
+
         $data = $request->toArray();
         $itemId = $data['item_id'] ?? null;
         if (!$itemId) {
