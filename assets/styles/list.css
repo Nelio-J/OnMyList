@@ -1,5 +1,5 @@
 .list-item {
-    background-color: #2a2a2a;
+    background-color: #161616;
     border-radius: var(--standard-border-radius);
     padding: 1rem;
     width: 100%;
@@ -27,7 +27,7 @@
 .thumbnail, .placeholder-thumbnail {
     width: 100%;
     height: 100%;
-    background: #222;
+    background: #161616;
     overflow: hidden;
     position: relative;
     aspect-ratio: 1 / 1;
@@ -45,42 +45,163 @@
     border: var(--border-width) solid #2a2a2a;
 }
 
-.create-link {
-    display: inline-block;
-    margin-top: 2rem;
-    margin-bottom: 5rem;
-    font-weight: bold;
-    color: inherit;
-    text-decoration: none;
-    border: var(--border-width) solid #3bb641;
-    border-radius: var(--standard-border-radius);
-    padding: 0.5rem 1rem;
-}
-
-.create-link:hover {
-    background-color: #3bb6411a;
-    color: #ebebeb;
-}
-
-.result {
+/* Search results */
+.backlog-modal {
     width: 100%;
-    height: 100%;
-    margin-bottom: 3rem;
+}
+
+.search-results {
     display: flex;
     flex-direction: column;
     align-items: center;
-}
-
-.result img {
-    height: 60%;
-}
-
-.name {
-    padding-left: 0.4rem;
-    padding-right: 0.4rem;
-    text-align: center;
-}
-
-.backlog-modal {
+    gap: 1.5rem;
     width: 100%;
+}
+
+.search-result-item {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    background-color: #252525;
+    opacity: 0.95;
+    background-image: repeating-radial-gradient( circle at 0 0, #0000 0, #060b2d 21px ), repeating-linear-gradient( #2f35a054, #111938 );
+    border-radius: var(--standard-border-radius);
+    padding: 1rem;
+    width: inherit;
+    max-width: 1800px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.search-result-item:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+    transition: all 0.3s ease;
+}
+
+.result-image {
+    width: 400px;
+    height: 300px;
+    object-fit: cover;
+    opacity: 1;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+.result-content {
+    flex: 1;
+    height: 300px;
+    padding-left: 1rem;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+.result-title {
+    font-size: 3rem;
+    font-weight: bold;
+    margin: 0 0 0.5rem 0;
+    color: #ffffff;
+}
+
+.result-meta {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+}
+
+.result-artist {
+    margin-left: 1rem;
+    margin-top: 1rem;
+    margin-bottom: 0;
+    color: inherit;
+    font-size: 1.5rem;
+    font-style: italic;
+}
+
+.result-release {
+    margin-left: 1rem;
+    margin-top: 0;
+    margin-bottom: 1rem;
+    color: inherit;
+    font-size: 1.5rem;
+    font-style: italic;
+}
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {}
+
+/* @media (max-width: 768px) {
+    .search-result-item {
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+    }
+
+    .result-content {
+        padding-left: 0;
+        padding-top: 1rem;
+        height: auto;
+    }
+
+    .result-image {
+        width: 100px;
+        height: 100px;
+    }
+
+    .result-meta, .open-backlog-modal {
+        position: static;
+    }
+
+    .result-meta {
+        text-align: left;
+        margin-bottom: 1rem;
+    }
+} */
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (max-width: 1400px) {
+    .result-title {
+        font-size: 2rem;
+    }
+    
+    .result-artist, .result-release {
+        font-size: 1.3rem;
+    }
+
+    /* place metadata and button at bottom of card */
+    .result-content {
+        position: relative;
+    }
+    .result-meta {
+        position: absolute;
+        bottom: 2.5rem;
+        left: 0;
+        text-align: left;
+        margin-bottom: 0;
+    }
+}
+
+/* Extra large devices (large laptops and desktops, 1400px and up) */
+@media only screen and (min-width: 1401px) {
+    .result-title {
+        font-size: 2.6rem;
+    }
+    
+    .result-artist, .result-release {
+        font-size: 1.3rem;
+    }
+}
+
+/* XXL devices (1440p desktops, 2000px and up) */
+@media only screen and (min-width: 2000px) {
+    .result-title {
+        font-size: 3rem;
+    }
+
+    .result-artist, .result-release {
+        font-size: 1.5rem;
+    }
 }

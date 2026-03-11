@@ -58,7 +58,7 @@ class SpotifyAPIService
                 'query' => [
                     'q' => $query,
                     'type' => 'artist,album',
-                    'limit' => 5,
+                    'limit' => 4,
                 ],
             ]
         );

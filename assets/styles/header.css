@@ -15,36 +15,101 @@
 }
 
 .title {
+    font-size: 4em;
     justify-self: center;
     color: #3bb641;
     padding: 2rem 0;
+    text-shadow: 2px 0px 2px #000000;
+    text-align: center;
+}
+
+.title-alt {
+    font-size: 4em;
+    justify-self: center;
+    color: white;
+    padding: 2rem 0;
+    text-shadow: 2px 0px 2px #1c5e1f;
+    text-align: center;
 }
 
 .title-index {
     font-size: 7rem;
-    text-shadow: 2px 2px 4px rgb(0, 0, 0);
+    text-shadow: 2px 2px 4px #000000;
 }
 
 .title-subtitle {
-    text-shadow: 2px 2px 4px rgb(0, 0, 0);
-}
-
-.edit-title-icon {
-    height: 1.5em;
-    justify-self: start;
-    align-self: center;
-    color: #3bb641;
-    margin-top: 1rem;
-    margin-left: 1rem;
-    vertical-align: middle;
-}
-
-.edit-title-icon-wrapper {
-    width: fit-content;
+    text-shadow: 2px 2px 4px #000000;
 }
 
 .description {
-    color: #3bb641;
+    color: #ffffff;
+    font-size: 1.5rem;
     display: flex;
     justify-content: center;
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {
+    .title {
+        font-size: 2.5em;
+    }
+
+    .title-alt {
+        font-size: 2.5em;
+    }
+
+    .title-index {
+        font-size: 4rem;
+    }
+
+    .description {
+        font-size: 1rem;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {
+    .title {
+        font-size: 3em;
+    }
+
+    .title-alt {
+        font-size: 3em;
+    }
+
+    .title-index {
+        font-size: 5rem;
+    }
+
+    .description {
+        font-size: 1.25rem;
+    }
+}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {}
+
+/* Large devices (laptops/desktops, 980px and up) */
+@media only screen and (min-width: 980px) {
+        .title {
+            font-size: 4em;
+        }
+    
+        .title-alt {
+            font-size: 4em;
+        }
+    
+        .title-index {
+            font-size: 7rem;
+        }
+    
+        .description {
+            font-size: 1.5rem;
+        }
+}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {}
+
+/* XXL devices (1440p desktops, 2000px and up) */
+@media only screen and (min-width: 2000px) {}

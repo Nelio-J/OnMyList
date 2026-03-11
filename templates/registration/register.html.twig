@@ -3,31 +3,36 @@
 {% block title %}Register{% endblock %}
 
 {% block body %}
-    <img src="{{ asset('images/Patternpad-Stripes-Vertical-Green-Black.svg') }}" alt="Background Pattern" class="bg-pattern">
+    <div class="wrapper auth-wrapper" data-controller="svg-animation">
+        {{ include('components/background/_pattern_stripes.html.twig') }}
 
-    {% for flash_error in app.flashes('verify_email_error') %}
-        <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
-    {% endfor %}
+        <div class="auth-card">
+            {% for flash_error in app.flashes('verify_email_error') %}
+                <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
+            {% endfor %}
 
-    <header class="header-content">
-        <h1 class="title">Make your account</h1>
-    </header>
+            <header class="header-content">
+                <h1 class="title-alt">Make your account</h1>
+            </header>
 
-    {{ form_errors(registrationForm) }}
+            {{ form_errors(registrationForm) }}
 
-    {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+            {{ form_start(registrationForm, {'attr': {'class': 'auth-form'}}) }}
+                {{ form_row(registrationForm.email) }}
+                {{ form_row(registrationForm.plainPassword, {
+                    label: 'Password'
+                }) }}
+                <div class="terms-row">
+                    {{ form_widget(registrationForm.agreeTerms) }}
+                    {{ form_label(registrationForm.agreeTerms) }}
+                </div>
 
-        {# <button type="submit" class="btn">Register</button> #}
-        {{ include('components/_button.html.twig', {'type': 'submit', 'label': 'Register'}) }}
-    {{ form_end(registrationForm) }}
-    <form>
-        <p class="mt-3">
-            Already have an account? <a href="{{ path('app_login') }}">Login</a>
-        </p>
-    </form>
+                {{ include('components/_button.html.twig', {'type': 'submit', 'label': 'Register'}) }}
+            {{ form_end(registrationForm) }}
+
+            <p class="mt-3">
+                Already have an account? <a href="{{ path('app_login') }}">Login</a>
+            </p>
+        </div>
+    </div>
 {% endblock %}

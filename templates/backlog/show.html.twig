@@ -12,14 +12,14 @@
 
 {% block body %}
 	<div class="wrapper" data-controller="svg-animation backlog-actions">
-		{{ include('components/background/_pattern_bauhaus.html.twig') }}
+		{{ include('components/background/_pattern_bauhaus_pink_green.html.twig') }}
 		{# <img src="{{ asset('images/Patternpad-Bauhaus-L-Fade-Green-Black.svg') }}" alt="Background Pattern" class="bg-pattern" style="opacity: 0.2;"> #}
 
 			<div class="backlog-header">
 				{# <a href="{{ path('app_backlog_overview') }}">{{ ux_icon('material-symbols:arrow-back-rounded', {class: 'back-arrow-icon'}) }}back to backlog overview</a>  #}
 				<div class="backlog-title-wrapper"> 
-					<h1 class="title" style="grid-column-start: 2"> {{ backlog.name }} </h1>
-					<a href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}" alt="Edit title" aria-label="Edit title" class="edit-title-icon-wrapper">{{ ux_icon('mingcute:edit-line', {class: 'edit-title-icon'}) }}</a>
+					<h1 class="title-alt" style="grid-column-start: 2"> {{ backlog.name }} </h1>
+					<a href="{{ path('app_backlog_edit', {'uuid': backlog.uuid, 'slug': backlog.slug}) }}" alt="Edit title" aria-label="Edit title" class="edit-title-icon-wrapper">{{ ux_icon('mingcute:edit-line', {class: 'edit-title-icon'}, {width: '28px', height: '28px'}) }}</a>
 				</div>
 				<p class="description">{{ backlog.description }}</p>
 			</div>

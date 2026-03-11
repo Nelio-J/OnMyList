@@ -4,7 +4,7 @@
 
 {% block body %}
     <div class="wrapper" data-controller="svg-animation">
-    	{{ include('components/background/_pattern_circles.html.twig') }}
+    	{{ include('components/background/_pattern_circles_pink_green.html.twig') }}
         {# <img src="{{ asset('images/Patternpad-Circles-Fade-Green-Black.svg') }}" alt="Background Pattern" class="bg-pattern"> #}
 
         {% if app.user and not app.user.isVerified %}
@@ -17,10 +17,10 @@
         {% endif %}
 
         <header class="header-content">
-            <h1 class="title">Backlogs</h1>
+            <h1 class="title-alt">Backlogs</h1>
         </header>
 
-        <a href="{{ path('app_backlog_new') }}" class="create-link">Create a new backlog {{ ux_icon('mynaui:plus-solid', {class: 'back-arrow-icon'}) }}</a>
+        <a href="{{ path('app_backlog_new') }}" class="create-link">Create a new backlog {{ ux_icon('mynaui:plus-solid', {class: 'back-arrow-icon'}, {width: '28px', height: '28px'}) }}</a>
 
         {% if backlogs is empty %}
             <p class="no-items-message">No backlogs found. Click <a href="{{ path('app_backlog_new') }}">here</a> to start one</p>
