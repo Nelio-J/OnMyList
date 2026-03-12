@@ -7,6 +7,7 @@
 .no-items-message {
   font-size: 1.5rem;
   font-style: italic;
+  font-weight: bold;
   color: #ffffff;
   text-align: center;
   margin-top: 5rem;
@@ -18,7 +19,7 @@
   flex-direction: column;
   position: relative; */
   border-radius: 12px;
-  border-color: #1d1d1d;
+  border-color: #161616;
   box-shadow: 0 4px 10px rgba(0,0,0,0.1);
   overflow: hidden;
   padding: 0;
@@ -150,3 +151,21 @@
     opacity: 1;
   }
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {}
+
+/* XXL devices (1440p desktops, 2000px and up) */
+@media only screen and (min-width: 2000px) {}

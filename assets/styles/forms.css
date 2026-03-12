@@ -27,13 +27,61 @@ input, textarea, select {
 .form-label {
     font-weight: bold;
     color: #3bb641;
-    margin-bottom: 0.5rem;
 }
 
 .form-control {
     padding: 0.5rem;
     width: 100%;
     margin-bottom: 3rem;
+}
+
+/* Register & Login form styling */
+.auth-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 80vh;
+    padding: 2rem 1rem;
+    position: relative;
+}
+
+.auth-card {
+    background: #161616;
+    padding: 2.5rem 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    width: 100%;
+    max-width: 1600px;
+}
+
+.auth-card .form-control {
+    margin-bottom: 2rem;
+}
+
+.auth-card .header-content {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.auth-card .title-alt {
+    margin: 0;
+}
+
+.terms-row {
+    display: flex;
+    align-items: center;
+    margin-bottom: 2rem;
+}
+
+.terms-checkbox {
+    width: auto;
+    margin-right: 0.5rem;
+}
+
+.auth-actions {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
 }
 
 @media (max-width: 924px) {
@@ -54,3 +102,21 @@ input, textarea, select {
     width: 100%;
   }
 }
+
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {}
+
+/* XXL devices (1440p desktops, 2000px and up) */
+@media only screen and (min-width: 2000px) {}

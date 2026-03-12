@@ -1,15 +1,37 @@
-<nav id="primary-navigation" class="primary-nav" aria-label="Primary">
+<nav id="primary-navigation" class="primary-nav" aria-label="Primary" data-controller="topnav-menu">
 	<div id="logo" class="primary-nav-logo">
-		<img class="nav-logo-icon" aria-hidden="true" focusable="false" width="100" src="{{ asset('images/Logo_transparent.png') }}" alt="Site logo"></img>
+		<img class="nav-logo-icon" aria-hidden="true" focusable="false" width="100" src="{{ asset('images/OnMyListLogoJersey15.png') }}" alt="Site logo"></img>
     </div>
-    <ul class="primary-nav-sections primary-nav-list">
-        <li class="primary-nav-list-item">
-            <a class="primary-nav-link" href="{{ path('app_backlog_index') }}">Home</a>
-        </li>
-        <li class="primary-nav-list-item">
-            <a class="primary-nav-link" href="{{ path('app_backlog_overview') }}">My Backlogs</a>
-        </li>
-    </ul>
+
+    <button id="topnav-open-btn" class="topnav_open" aria-expanded="false" aria-label="Navigation menu" data-action="click->topnav-menu#openMenu" data-topnav-menu-target="button">
+        {{ ux_icon('tabler:menu-2', {class: 'open-menu-icon'}, {width: '28px', height: '28px'}) }}
+    </button>
+    <div class="topnav_menu" role="dialog" aria-modal="true" aria-label="Navigation menu" data-action="change->topnav-menu#setupTopNav">
+        <button id="topnav-close-btn" class="topnav_close" aria-label="Close" data-action="click->topnav-menu#closeMenu">
+            {{ ux_icon('tabler:x', {class: 'close-menu-icon'}, {width: '28px', height: '28px'}) }}
+        </button>
+        <ul class="primary-nav-sections primary-nav-list">
+            <li class="primary-nav-list-item">
+                <a class="primary-nav-link" href="{{ path('app_backlog_index') }}">Home</a>
+            </li>
+            <li class="primary-nav-list-item">
+                <a class="primary-nav-link" href="{{ path('app_backlog_overview') }}">My Backlogs</a>
+            </li>
+            {% if app.user %}
+                <li class="primary-nav-list-item">
+                    <a class="primary-nav-link" href="{{ path('app_logout') }}" class="btn">Logout</a>
+                </li>
+            {% else %}
+                <li class="primary-nav-list-item">
+                    <a class="primary-nav-link" href="{{ path('app_login') }}" class="btn">Login</a>
+                </li>
+                <li class="primary-nav-list-item">
+                    <a class="primary-nav-link" href="{{ path('app_register') }}" class="btn">Sign Up</a>
+                </li>
+            {% endif %}
+        </ul>
+    </div>
+
 
     <div class="search-bar">
         <form action="{{ path('app_spotify_search') }}" method="get">

@@ -19,7 +19,7 @@
 .primary-nav a:hover {
     border: var(--border-width)solid #3bb641;
     color: #ebebeb;
-    background-color: #3bb6411a;
+    background-color: #3bb6418f;
 }
 
 .primary-nav {
@@ -31,9 +31,11 @@
     width: 100%;
     height: var(--nav-height);
     z-index: 1000;
-    background-color: #1d1d1d;
+    background-color: transparent;
+    box-shadow: 50px 100px 100px rgba(0,0,0,0.7) inset;
     padding: 0.5rem 2rem;
     overflow: hidden;
+    text-wrap: nowrap;
 }
 
 .primary-nav-list {
@@ -42,12 +44,40 @@
     align-items: center;
     gap: 2rem;
     margin-left: 4rem;
+    margin-right: 4rem;
     padding: 0;
 }
 
 .primary-nav-list-item {
+    background-color: #161616ed;
     font-weight: bold;
     font-size: 1rem;
+}
+
+.topnav_open, .topnav_close {
+    background: none;
+    border: none;
+    padding: 0;
+    display: block;
+    /* margin-inline-start: auto; */
+    cursor: pointer;
+}
+
+.topnav_open[aria-expanded="true"] {
+    + .topnav_menu {
+        translate: 0;
+        
+        /*  */
+        @media only screen and (prefers-reduced-motion: reduce) {
+            opacity: 1;
+        }
+    }
+}
+
+.open-menu-icon, .close-menu-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: #ebebeb;
 }
 
 .search-bar {
@@ -56,24 +86,58 @@
     font-size: inherit;
 }
 
-@media (max-width: 900px) {
-    .primary-nav {
-        flex-wrap: wrap;
-        align-items: center;
-        height: auto;
-    }
-
-    /* keep the nav list next to the logo (don't let it wrap to a new line) */
-    .primary-nav-list {
-        order: 1;
-    }
-
-    /* force the search bar onto its own row beneath the list/logo */
-    .search-bar {
-        order: 2;
-        width: 100%;
-        margin-left: 0;
-        margin-top: 0.5rem;
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 1050px) {
+    .topnav_open, .topnav_close {
         display: block;
     }
+
+    .topnav_menu {
+        background-color: rgb(19, 53, 25);
+        position: fixed;
+        inset: 0;
+        padding: 1.5rem;
+        translate: 100vw 0;
+        transition: translate 0.5s ease-in-out;
+    }
+
+    .primary-nav-list-item {
+        flex-direction: column;
+    }
+
+    .primary-nav-logo {
+        display: none;
+    }
+
+    .search-bar {
+        display: none;
+    }
 }
+
+/* Change to a fade in and out effect for users with reduced motion preferences */
+@media only screen and (max-width: 1050px) and (prefers-reduced-motion: reduce) {
+    .topnav_menu {
+        translate: 0;
+        opacity: 0;
+        transition: opacity 0.5s ease-in-out;
+    }
+}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 1050px) {
+    .topnav_open, .topnav_close {
+        display: none;
+    }
+ }
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (min-width: 992px) {}
+
+/* Extra large devices (large laptops and desktops, 1200px and up) */
+@media only screen and (min-width: 1200px) {}
+
+/* XXL devices (1440p desktops, 2000px and up) */
+@media only screen and (min-width: 2000px) {}

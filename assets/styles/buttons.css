@@ -20,12 +20,32 @@
 }
 
 .open-backlog-modal {
-  margin: 0.75rem 0.15rem;
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    margin: 0;
 }
 
 .modal-button {
-  
   margin-top: 1rem;
+}
+
+.create-link, .create-link:visited {
+    display: inline-block;
+    margin-top: 2rem;
+    margin-bottom: 5rem;
+    font-weight: bold;
+    background-color: #3bb641;
+    color: black;
+    text-decoration: none;
+    /* border: var(--border-width) solid #0d2c0f; */
+    border-radius: var(--standard-border-radius);
+    padding: 0.5rem 1rem;
+}
+
+.create-link:hover {
+    background-color: #ffe099;
+    color: black;
 }
 
 .delete-item-button {
@@ -83,6 +103,7 @@
 }
 
 .filter-items {
+    background-color: #161616;
     border-color: #3bb641;
     color: #3bb641;
     border-radius: 0.5rem;
@@ -90,7 +111,7 @@
 }
 
 @media (max-width: 924px) {
-  /* Stack action groups vertically */
+  /* Stack vertically */
   .backlog-actions {
     display: flex;
     flex-direction: column;
@@ -119,3 +140,28 @@
   }
 }
 
+/* Extra small devices (phones, 600px and down) */
+@media only screen and (max-width: 600px) {}
+
+/* Small devices (portrait tablets and large phones, 600px and up) */
+@media only screen and (min-width: 600px) {}
+
+/* Medium devices (landscape tablets, 768px and up) */
+@media only screen and (min-width: 768px) {}
+
+/* Large devices (laptops/desktops, 992px and up) */
+@media only screen and (max-width: 1400px) {
+    .open-backlog-modal {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 100%;
+        margin-top: 1rem;
+        margin-left: 1rem;
+        width: -webkit-fill-available;
+        width: -moz-available;
+    }
+}
+
+/* XXL devices (1440p desktops, 2000px and up) */
+@media only screen and (min-width: 2000px) {}
