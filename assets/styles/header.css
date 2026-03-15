@@ -19,7 +19,7 @@
     justify-self: center;
     color: #3bb641;
     padding: 2rem 0;
-    text-shadow: 2px 0px 2px #000000;
+    text-shadow: 3px 3px 3px #000000;
     text-align: center;
 }
 
@@ -34,11 +34,11 @@
 
 .title-index {
     font-size: 7rem;
-    text-shadow: 2px 2px 4px #000000;
+    text-shadow: 3px 3px 3px #000000;
 }
 
 .title-subtitle {
-    text-shadow: 2px 2px 4px #000000;
+    text-shadow: 3px 3px 3px #000000;
 }
 
 .description {

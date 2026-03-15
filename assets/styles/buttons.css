@@ -5,7 +5,14 @@
     border-radius: 0.5rem;
     font-weight: bold;
     min-width: 8rem;
-    box-shadow: #000 4px 4px 0px;
+    /* box-shadow: #000 4px 4px 0px; */
+    -webkit-box-shadow: 5px 5px 2px 1px rgba(0,0,0,0.95); 
+    box-shadow: 5px 5px 2px 1px rgba(0,0,0,0.95);
+    transition: all 0.3s ease;
+}
+
+.btn:hover {
+    color: black;
 }
 
 .btn-form {
@@ -19,6 +26,8 @@
     color: white;
     margin-top: 3rem;
 }
+
+
 
 .open-backlog-modal {
     position: absolute;
@@ -42,6 +51,7 @@
     /* border: var(--border-width) solid #0d2c0f; */
     border-radius: var(--standard-border-radius);
     padding: 0.5rem 1rem;
+    transition: all 0.3s ease;
 }
 
 .create-link:hover {
