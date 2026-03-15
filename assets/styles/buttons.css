@@ -5,6 +5,7 @@
     border-radius: 0.5rem;
     font-weight: bold;
     min-width: 8rem;
+    box-shadow: #000 4px 4px 0px;
 }
 
 .btn-form {
@@ -150,7 +151,7 @@
 @media only screen and (min-width: 768px) {}
 
 /* Large devices (laptops/desktops, 992px and up) */
-@media only screen and (max-width: 1400px) {
+@media only screen and (max-width: 1599px) {
     .open-backlog-modal {
         position: absolute;
         bottom: 0;
