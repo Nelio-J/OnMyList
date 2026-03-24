@@ -4,10 +4,16 @@ input, textarea, select {
     margin-bottom: 0;
 }
 
+.search-input-group {
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
 .search-spotify-input {
     padding: 0.5rem;
     margin-right: 1rem;
-    width: 90%;
+    width: 100%;
 }
 
 .search-items-wrapper {
@@ -85,7 +91,6 @@ input, textarea, select {
 }
 
 @media (max-width: 924px) {
-  /* Stop absolute positioning so search field scales properly */
   .search-items-wrapper {
     position: static;
     margin: 0 0 0.75rem 0;
