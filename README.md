@@ -2,7 +2,7 @@
 
 <div align=center>
   <br>
-  <a href="https://github.com/Nelio-J/OnMyList"><img src="https://github.com/Nelio-J/OnMyList/blob/main/assets/images/Logo_transparent.png" alt="On My List Logo" width="200"></a>
+  <a href="https://github.com/Nelio-J/OnMyList"><img src="https://github.com/Nelio-J/OnMyList/blob/main/assets/images/OnMyListLogoJersey15.png" alt="On My List Logo" width="200"></a>
   <br>
 </div>
 
