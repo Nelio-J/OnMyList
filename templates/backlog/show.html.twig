@@ -1,13 +1,11 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Backlog
-{% endblock %}
+{% block title %}{{ backlog.name }} - Backlog{% endblock %}
 
 {% block javascripts %}
 	{% block importmap %}
 		{{ importmap('app') }}
 	{% endblock %}
-	<script src="{{ asset('js/autosave-inputs.js') }}" type="module" defer></script>
 {% endblock %}
 
 {% block body %}
@@ -111,11 +109,11 @@
 								<div class="item-card-face item-card-face--back">
 									<div class="item-content">
 
-										<textarea class="item-note" data-item-id="{{ item.id }}" placeholder="Add a note..." cols="35" rows="50" wrap="hard">{% if item.note %}{{ item.note }}{% endif %}</textarea>
+										<textarea class="item-note" data-action="input->flip-card#saveCardNote" data-item-id="{{ item.id }}" placeholder="Add a note..." cols="35" rows="50" wrap="hard">{% if item.note %}{{ item.note }}{% endif %}</textarea>
 
 										<div class="item-status">
 											{% if item.status %}
-												<select class="status-select" data-item-id="{{ item.id }}">
+												<select class="status-select" data-action="change->flip-card#saveCardStatus" data-item-id="{{ item.id }}">
 													{% for statusOption in ['planned', 'listening', 'completed'] %}
 														<option value="{{ statusOption }}" {% if item.status.value == statusOption %} selected {% endif %}>
 															{{ statusOption }}

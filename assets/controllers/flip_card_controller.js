@@ -7,6 +7,17 @@ import { Controller } from '@hotwired/stimulus';
 
 /* stimulusFetch: 'lazy' */
 export default class extends Controller {
+    // static values = {
+    //   config: {type: Object, default: {input: {wait: 800}}}
+    // };
+
+    debounce(fn, delay){
+        let timer;
+        return (...args) => {
+            clearTimeout(timer);
+            timer = setTimeout(() => { fn.apply(this, args); }, delay);
+        };
+    }
     
     initialize() {
         // Called once when the controller is first instantiated (per element)
@@ -23,6 +34,9 @@ export default class extends Controller {
         // Here you can add event listeners on the element or target elements,
         // add or remove classes, attributes, dispatch custom events, etc.
         // this.fooTarget.addEventListener('click', this._fooBar)
+        this.debouncedSaveNote = this.debounce((textarea) => {
+            this.saveItemChange(textarea.dataset.itemId, { note: textarea.value });
+        }, 800);
     }
 
     // Add custom controller actions here
@@ -34,6 +48,39 @@ export default class extends Controller {
         }
         this.element.classList.toggle("is-flipped");
     }
+
+    async saveItemChange(itemId, data) {
+        try {
+            const response = await fetch(`/backlog/item/edit-meta`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify({ item_id: itemId, ...data }),
+            });
+
+            const result = await response.json();
+
+            if (result.success) {
+                console.log('Success:', result);
+            }
+        } catch (error) {
+            console.error('Error:', error);
+        }
+
+    }
+
+    saveCardStatus(event) {
+        const select = event.target;
+        this.saveItemChange(select.dataset.itemId, { status: select.value });
+    }
+
+    saveCardNote(event) {
+        const textarea = event.target;
+        this.debouncedSaveNote(textarea);
+    }
+
 
     disconnect() {
         // Called anytime its element is disconnected from the DOM
