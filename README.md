@@ -20,6 +20,8 @@ As someone that loves music and exploring different genres, I've build up quite 
 I wanted an easy way of managing this backlog in one place. The result of this is **On My List**! By integrating the Spotify API, On My List let's you search for albums & artists and add them to a manageable list.
 <br>
 
+You can take a look at a demo of the application by clicking on the following link: <a href="http://158.101.209.123/" target="_blank">OnMyList</a>
+ **(NOTE: I don't have a domain name for this yet. You can still make an account and login, but you won't receive an email to verify your account)**.
   
 ## Key Features
 
@@ -44,34 +46,42 @@ I wanted an easy way of managing this backlog in one place. The result of this i
 
 ## Get started
 
-1. **Install dependencies**
+   <h2>1. Install dependencies</h2>
 
    ```bash
    cd OnMyList/
    composer install
    ```
 
-2. **Setup the environment variables**
+   <h2>2. Setup the environment variables</h2>
 
-   This application requires a key for the Spotify API and a database connection. It is recommended to store the access credentials for these in a .env.local file, so they get kept private. There is an example files called .env.local.example to help you setup. Remove the '.example' from the filename to use it.
+   This application requires a key for the Spotify API, a database connection and a SMTP server to send email. It is recommended to store the access credentials for these in a .env.local file, so they get kept private. There is an example files called .env.local.example to help you setup. Remove the '.example' from the filename to use it.
 
-   <h4>Access to the Spotify Web API can be requested <a href="https://developer.spotify.com/documentation/web-api" target="_blank">on their website</a>.</h4>
-
-   Enter the client credentials in the .env.local file. 
+   <h3>Access to the Spotify Web API can be requested <a href="https://developer.spotify.com/documentation/web-api" target="_blank">on their website</a>.</h4>
+   
+   **Enter the client credentials in the .env.local file.**
    ```bash
    SPOTIFY_CLIENT_ID=""
    SPOTIFY_CLIENT_SECRET=""
    ```
-
    
-   <h4>Setup database connecting</h4>
+   <h3>Setup database connecting</h2>
 
-   Choose and connect your own local database in the .env.local file. Example connection lines for databases can be found in .env
+   **Choose and connect your own local database in the .env.local file. Example connection lines for databases can be found in .env**
    ```bash
    DATABASE_URL=""
    ```
 
-3. **Start the app**
+   <h3>Connect the SMTP server</h3>
+
+   There are a variety of options for an SMTP server, like [Mailtrap](https://mailtrap.io/) and [Mailpit](https://mailpit.axllent.org/docs/install/). When running the application locally, you can use a sandbox environment to capture all outgoing emails. Please refer to the documentation of the SMTP service of your choosing for installation instructions.
+   
+   **Choose and connect the SMTP server of your choice in the .env.local file.**
+   ```bash
+   MAILER_DSN=
+   ```
+
+<h2>3. Start the app</h2>
 
    ```bash
    symfony serve
